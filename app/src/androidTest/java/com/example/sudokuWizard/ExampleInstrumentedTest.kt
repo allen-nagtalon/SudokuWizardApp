@@ -1,4 +1,4 @@
-package com.example.sudokuwizardapp
+package com.example.sudokuWizard
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
