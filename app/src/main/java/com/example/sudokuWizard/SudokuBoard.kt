@@ -27,7 +27,10 @@ class SudokuBoard(
     fun printBoard() {
         for(row in board) {
             for(col in row) {
-                if (col != EMPTY_CELL) print("$col ")
+                if (col != EMPTY_CELL ) {
+                    if(col > 9) print("${(col+55).toChar()} ")
+                    else print("$col ")
+                }
                 else print("- ")
             }
             println()
