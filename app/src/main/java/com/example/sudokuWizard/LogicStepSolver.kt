@@ -27,25 +27,58 @@ import java.util.*
 
 class LogicStepSolver(private val board : SudokuBoard) : SudokuSolver {
     // Priority Queue of all empty cells ordered by the number of possible values
-    private val emptyCellList = createPotentialCellValues()
-
-
-    // Uses the given board to create the priority queue of which cells are empty
-    private fun createPotentialCellValues() : PriorityQueue<PotValuesList> {
+    private val emptyCellList = {
         val compareBySize : Comparator<PotValuesList> = compareBy { it.values.size }
         val emptyCells = PriorityQueue<PotValuesList>(compareBySize)
 
-        // Iterate through board to add cells and their values
+        for(i in board.START_INDEX until board.ROWS) {
+            for(j in board.START_INDEX until board.COLS) {
+                if (board[i][j] == board.EMPTY_CELL) {
+                    emptyCells.add(PotValuesList(i, j, board.MAX_VALUE))
+                }
+            }
+        }
 
-        return emptyCells
+        emptyCells
+    }
+
+    private fun rowCheck(row : Int, value : Int) : Boolean {
+        for(col in board[row]) {
+            if(value == col) return false
+        }
+        return true
+    }
+
+    private fun colCheck(col : Int, value : Int) : Boolean {
+        for(row in board.board) {
+            if (row[col] == value) return false
+        }
+        return true
+    }
+
+    private fun boxCheck(row : Int, col : Int, value : Int) : Boolean {
+        val boxRow = (row / board.ROW_SUB_LENGTH) * board.ROW_SUB_LENGTH
+        val boxCol = (col / board.COL_SUB_LENGTH) * board.COL_SUB_LENGTH
+
+        for(i in boxRow until (boxRow+board.ROW_SUB_LENGTH)) {
+            for(j in boxCol until (boxCol+board.COL_SUB_LENGTH)) {
+                if(board[i][j] == value) return false
+            }
+        }
+        return true
     }
 
     override fun solve() : Boolean {
+
+
         return false
     }
 }
 
 // Class to store empty cell information: row, col, and the potential values
-class PotValuesList(val row : Int, val col : Int, val values : List<Int>) {
-
+class PotValuesList(private val row : Int, private val col : Int, private val max : Int) {
+    val values = ArrayList<Int>(max)
+    init {
+        for(i in 0 until max) values[i] = i+1
+    }
 }
