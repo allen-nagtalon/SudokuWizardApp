@@ -60,6 +60,11 @@ class LogicStepSolver(private val board : SudokuBoard) : SudokuSolver {
         return true
     }
 
+    // Checks if a potential value passes all sudoku constraints for a given cell
+    private fun cellCheck(row : Int, col : Int, value : Int) : Boolean {
+        return (rowCheck(row, value) && colCheck(col, value) && boxCheck(row, col, value))
+    }
+
     // Builds a priority queue of all the empty cells; ordered by possible value count
     private fun createEmptyCellList() : PriorityQueue<PotValuesList> {
         val compareBySize : Comparator<PotValuesList> = compareBy { it.values.size }
@@ -76,30 +81,66 @@ class LogicStepSolver(private val board : SudokuBoard) : SudokuSolver {
         return emptyCells
     }
 
+    // Iterates through list of empty cells to remove potential values that don't follow constraints
+    private fun reducePotentialValues() {
+        for (cur in emptyCellList) {
+            for (i in cur.values) {
+                if (!cellCheck(cur.row, cur.col, i)) cur.values.remove(i)
+            }
+        }
+    }
+
     /** Public Functions *********/
 
     override fun solve() : Boolean {
-        /**
-         * Cases:
-         * 1. EmptyCellsList is empty: Board has been filled.
-         * 2. EmptyCellsList is not empty:
-         *   A. A cell has no potential values
-         *     a. A guess made before was wrong, or
-         *     b. The board is invalid
-         *   B. A cell has 1 potential value
-         *   C. All cells have 2+ pot. values
-         */
+        while(!emptyCellList.isEmpty()) {
+            var changed = false
+            reducePotentialValues()
 
-        return false
+            // Reduce emptyCellList as possible
+            while(emptyCellList.peek().getSize() < 2) {
+                when(emptyCellList.peek().getSize()) {
+                    // Head cell has only 1 potential value
+                    1 -> {
+                        val cell = emptyCellList.poll()
+                        board[cell.row][cell.col] = cell.values[0]
+                        changed = true
+                    }
+                    // Head cell has no potential value
+                    else -> {
+                        return false
+                    }
+                }
+            }
+
+            // If a new value hasn't been added to the board, a guess must be made
+            if(!changed) {
+                val cell = emptyCellList.poll()
+                for (guess in cell.values) {
+                    board[cell.row][cell.col] = guess
+                    if(solve()) return true
+                }
+
+                return false
+            }
+        }
+
+        // If emptyCellList is empty, the board is filled
+        return true
     }
 
     fun test() {
-        print("There are ${emptyCellList.size} empty cells.")
+        println("There are ${emptyCellList.size} empty cells.")
+        println(emptyCellList.peek().toString())
+
+        for(cur in emptyCellList) {
+            println(cur.toString())
+        }
     }
 }
 
 // Class to store empty cell information: row, col, and the potential values
-class PotValuesList(private val row : Int, private val col : Int, private val max : Int) {
+class PotValuesList(val row : Int, val col : Int, private val max : Int) {
 
     // ArrayList containing the potential values that can fill a given cell (row, col)
     val values = ArrayList<Int>()
@@ -108,6 +149,13 @@ class PotValuesList(private val row : Int, private val col : Int, private val ma
         for(i in 0 until max) values.add(i+1)
     }
 
+    override fun toString() : String {
+        return "Row: $row | Col: $col | Values: ${values.size}"
+    }
+
+    fun getSize() : Int {
+        return values.size
+    }
 }
 
 fun main() {
