@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">SudokuWizardApp</string>
+
+    <!-- General Buttons -->
+    <string name="solve_button">Solve</string>
+    <string name="edit_button">Edit</string>
+    <string name="clear_button">Clear</string>
+
+    <!-- Number Buttons for Cells -->
+    <string name="one_button">1</string>
+    <string name="two_button">2</string>
+    <string name="three_button">3</string>
+    <string name="four_button">4</string>
+    <string name="five_button">5</string>
+    <string name="six_button">6</string>
+    <string name="seven_button">7</string>
+    <string name="eight_button">8</string>
+    <string name="nine_button">9</string>
 </resources>
