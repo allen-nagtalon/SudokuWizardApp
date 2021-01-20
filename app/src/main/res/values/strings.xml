@@ -4,7 +4,7 @@
     <!-- General Buttons -->
     <string name="solve_button">Solve</string>
     <string name="edit_button">Edit</string>
-    <string name="clear_button">Clear</string>
+    <string name="clear_board_button">Clear</string>
 
     <!-- Number Buttons for Cells -->
     <string name="one_button">1</string>
@@ -16,4 +16,5 @@
     <string name="seven_button">7</string>
     <string name="eight_button">8</string>
     <string name="nine_button">9</string>
+    <string name="clear_cell_button">C</string>
 </resources>

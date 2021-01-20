@@ -6,32 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TableLayout
-        android:layout_width="0dp"
-        android:layout_height="389dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </TableLayout>
+    <com.example.sudokuWizard.SudokuBoardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/clear_board_button"
 
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
-        android:text="@string/clear_button"
+        android:text="@string/clear_board_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button3" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/solve_button"
 
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="100dp"
@@ -150,7 +143,7 @@
         android:layout_height="54dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="128dp"
-        android:text="C"
+        android:text="@string/clear_cell_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/nine_button" />
 
