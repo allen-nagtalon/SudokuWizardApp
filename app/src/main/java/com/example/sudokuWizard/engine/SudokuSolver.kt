@@ -1,4 +1,4 @@
-package com.example.sudokuWizard
+package com.example.sudokuWizard.engine
 
 interface SudokuSolver {
     fun solve() : Boolean

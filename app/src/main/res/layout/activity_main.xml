@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
-    <com.example.sudokuWizard.SudokuBoardView
+    <com.example.sudokuWizard.view.SudokuBoardView
         android:id="@+id/board_view"
         android:layout_width="385dp"
         android:layout_height="418dp"

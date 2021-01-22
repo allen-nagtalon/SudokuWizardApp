@@ -1,4 +1,4 @@
-package com.example.sudokuWizard
+package com.example.sudokuWizard.engine
 
 class SudokuBoard(
     private val boardLayout : String,

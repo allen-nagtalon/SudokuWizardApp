@@ -1,7 +1,8 @@
-package com.example.sudokuWizard
+package com.example.sudokuWizard.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.sudokuWizard.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

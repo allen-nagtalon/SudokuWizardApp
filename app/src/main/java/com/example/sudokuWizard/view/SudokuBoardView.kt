@@ -1,4 +1,4 @@
-package com.example.sudokuWizard
+package com.example.sudokuWizard.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.example.sudokuWizard.engine.SudokuBoard
 
 class SudokuBoardView(context : Context,
                       attributeSet : AttributeSet) : View(context, attributeSet) {
