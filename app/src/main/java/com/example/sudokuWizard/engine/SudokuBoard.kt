@@ -1,5 +1,7 @@
 package com.example.sudokuWizard.engine
 
+import androidx.lifecycle.MutableLiveData
+
 class SudokuBoard(
     private val boardLayout : String,
     val MAX_VALUE : Int,
@@ -22,7 +24,22 @@ class SudokuBoard(
             j -> cells[(i*COLS)+j].toInt() }
     }
 
+    var selectedCellLiveData = MutableLiveData<Pair<Int, Int>>()
+
+    private var selectedRow = -1
+    private var selectedCol = -1
+
+    init {
+        selectedCellLiveData.postValue(Pair(selectedRow, selectedCol))
+    }
+
     operator fun get(i : Int) = board[i]
+
+    fun updateSelectedCell(row : Int, col : Int) {
+        selectedRow = row
+        selectedCol = col
+        selectedCellLiveData.postValue(Pair(row, col))
+    }
 
     fun printBoard() {
         for(row in board) {

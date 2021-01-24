@@ -18,6 +18,8 @@ class SudokuBoardView(context : Context,
     private var selectedRow = 1
     private var selectedCol = 4
 
+    private var listener : OnTouchListener? = null
+
     private val thickLinePaint = Paint().apply {
         style = Paint.Style.STROKE
         color = Color.BLACK
@@ -126,8 +128,22 @@ class SudokuBoardView(context : Context,
     }
 
     private fun handleTouchEvent(x : Float, y : Float) {
-        selectedRow = (y / cellPixelSize).toInt()
-        selectedCol = (x / cellPixelSize).toInt()
+        val possibleSelectedRow = (y / cellPixelSize).toInt()
+        val possibleSelectedCol = (x / cellPixelSize).toInt()
+        listener?.onCellTouched(possibleSelectedRow, possibleSelectedCol)
+    }
+
+    fun updateSelectedCellUI(row : Int, col : Int) {
+        selectedRow = row
+        selectedCol = col
         invalidate()
+    }
+
+    fun registerListener(listener : OnTouchListener) {
+        this.listener = listener
+    }
+
+    interface OnTouchListener {
+        fun onCellTouched(row : Int, col : Int)
     }
 }
