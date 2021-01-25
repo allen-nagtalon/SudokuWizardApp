@@ -7,13 +7,17 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import com.example.sudokuWizard.engine.SudokuBoard
+import com.example.sudokuWizard.engine.Board
 
-class SudokuBoardView(context : Context,
-                      attributeSet : AttributeSet) : View(context, attributeSet) {
+class BoardView(context : Context,
+                attributeSet : AttributeSet) : View(context, attributeSet) {
 
-    private var board = SudokuBoard()
     private var cellPixelSize = 0F
+
+    private var rows = 9
+    private var cols = 9
+    private var rowSubSize = 3
+    private var colSubSize = 3
 
     private var selectedRow = 1
     private var selectedCol = 4
@@ -54,7 +58,7 @@ class SudokuBoardView(context : Context,
 
     override fun onDraw(canvas: Canvas) {
         /** Adjust this later to account for varying sized boards. **/
-        cellPixelSize = (width / board.ROWS).toFloat()
+        cellPixelSize = (width / rows).toFloat()
 
         fillCells(canvas)
         drawFrame(canvas)
@@ -63,8 +67,8 @@ class SudokuBoardView(context : Context,
     private fun drawFrame(canvas : Canvas) {
         canvas.drawRect(0F, 0F, width.toFloat(), height.toFloat(), thickLinePaint)
 
-        for(i in 1 until board.ROWS) {
-            val lineThickness = when (i % board.ROW_SUB_LENGTH) {
+        for(i in 1 until rows) {
+            val lineThickness = when (i % rowSubSize) {
                 0 -> thickLinePaint
                 else -> thinLinePaint
             }
@@ -90,14 +94,14 @@ class SudokuBoardView(context : Context,
     private fun fillCells(canvas : Canvas) {
         if (selectedRow == -1 || selectedCol == -1) return
 
-        for(r in 0 until board.ROWS) {
-            for(c in 0 until board.COLS) {
+        for(r in 0 until rows) {
+            for(c in 0 until cols) {
                 if(r == selectedRow && c == selectedCol) {
                     fillCellColor(canvas, r, c, selectedCellPaint)
                 } else if (r == selectedRow || c == selectedCol) {
                     fillCellColor(canvas, r, c, relatedCellPaint)
-                } else if (r / board.ROW_SUB_LENGTH == selectedRow / board.ROW_SUB_LENGTH &&
-                        c / board.COL_SUB_LENGTH == selectedCol / board.COL_SUB_LENGTH) {
+                } else if (r / rowSubSize == selectedRow / rowSubSize &&
+                        c / colSubSize == selectedCol / colSubSize) {
                     fillCellColor(canvas, r, c, relatedCellPaint)
                 }
             }
@@ -111,10 +115,6 @@ class SudokuBoardView(context : Context,
                 (c+1) * cellPixelSize,
                 (r+1) * cellPixelSize,
                 paint)
-    }
-
-    fun setBoard(board : SudokuBoard) {
-        this.board = board
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -137,6 +137,13 @@ class SudokuBoardView(context : Context,
         selectedRow = row
         selectedCol = col
         invalidate()
+    }
+
+    fun updateBoardSetttings(rows : Int, cols : Int, rowSubSize : Int, colSubSize : Int) {
+        this.rows = rows
+        this.cols = cols
+        this.rowSubSize = rowSubSize
+        this.colSubSize = colSubSize
     }
 
     fun registerListener(listener : OnTouchListener) {

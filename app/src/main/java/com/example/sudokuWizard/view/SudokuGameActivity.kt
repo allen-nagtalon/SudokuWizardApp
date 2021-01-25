@@ -6,11 +6,11 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.sudokuWizard.R
-import com.example.sudokuWizard.viewmodel.SudokuBoardViewModel
+import com.example.sudokuWizard.viewmodel.BoardViewModel
 
-class MainActivity : AppCompatActivity(), SudokuBoardView.OnTouchListener {
+class SudokuGameActivity : AppCompatActivity(), BoardView.OnTouchListener {
 
-    private lateinit var viewModel : SudokuBoardViewModel
+    private lateinit var viewModel : BoardViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity(), SudokuBoardView.OnTouchListener {
 
         board_view.registerListener(this)
 
-        viewModel = ViewModelProviders.of(this).get(SudokuBoardViewModel::class.java)
-        viewModel.board
+        viewModel = ViewModelProviders.of(this).get(BoardViewModel::class.java)
+        viewModel.sudokuGame
             .selectedCellLiveData.observe(this, Observer { updateSelectedCellUI(it)})
     }
 
@@ -28,6 +28,6 @@ class MainActivity : AppCompatActivity(), SudokuBoardView.OnTouchListener {
     }
 
     override fun onCellTouched(row : Int, col : Int) {
-        viewModel.board.updateSelectedCell(row, col)
+        viewModel.sudokuGame.updateSelectedCell(row, col)
     }
 }
