@@ -4,10 +4,11 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import com.example.sudokuWizard.engine.Board
+import com.example.sudokuWizard.engine.Cell
 
 class BoardView(context : Context,
                 attributeSet : AttributeSet) : View(context, attributeSet) {
@@ -23,6 +24,8 @@ class BoardView(context : Context,
     private var selectedCol = 4
 
     private var listener : OnTouchListener? = null
+
+    private var cells : Array<Array<Cell>>? = null
 
     private val thickLinePaint = Paint().apply {
         style = Paint.Style.STROKE
@@ -46,6 +49,12 @@ class BoardView(context : Context,
         color = Color.parseColor("#efedef")
     }
 
+    private val textPaint = Paint().apply {
+        style = Paint.Style.FILL_AND_STROKE
+        color = Color.BLACK
+        textSize = 24F
+    }
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
@@ -62,6 +71,7 @@ class BoardView(context : Context,
 
         fillCells(canvas)
         drawFrame(canvas)
+        drawText(canvas)
     }
 
     private fun drawFrame(canvas : Canvas) {
@@ -92,17 +102,41 @@ class BoardView(context : Context,
     }
 
     private fun fillCells(canvas : Canvas) {
-        if (selectedRow == -1 || selectedCol == -1) return
+        cells?.forEach {
+            it.forEach {
+                val r = it.row
+                val c = it.col
 
-        for(r in 0 until rows) {
-            for(c in 0 until cols) {
                 if(r == selectedRow && c == selectedCol) {
                     fillCellColor(canvas, r, c, selectedCellPaint)
                 } else if (r == selectedRow || c == selectedCol) {
                     fillCellColor(canvas, r, c, relatedCellPaint)
                 } else if (r / rowSubSize == selectedRow / rowSubSize &&
-                        c / colSubSize == selectedCol / colSubSize) {
+                    c / colSubSize == selectedCol / colSubSize) {
                     fillCellColor(canvas, r, c, relatedCellPaint)
+                }
+            }
+        }
+    }
+
+    private fun drawText(canvas : Canvas) {
+        cells?.forEach {
+            it.forEach {
+                if(it.value != 0) {
+                    val row = it.row
+                    val col = it.col
+                    val valString = it.value.toString()
+                    val textBounds = Rect()
+
+                    textPaint.getTextBounds(valString, 0, valString.length, textBounds)
+
+                    val textWidth = textPaint.measureText(valString)
+                    val textHeight = textBounds.height()
+
+                    canvas.drawText(valString,
+                        (col * cellPixelSize) + cellPixelSize / 2 - textWidth / 2,
+                        (row * cellPixelSize) + cellPixelSize / 2 - textHeight / 2,
+                        textPaint)
                 }
             }
         }
@@ -148,6 +182,11 @@ class BoardView(context : Context,
 
     fun registerListener(listener : OnTouchListener) {
         this.listener = listener
+    }
+
+    fun updateCells(cells : Array<Array<Cell>>) {
+        this.cells = cells
+        invalidate()
     }
 
     interface OnTouchListener {
