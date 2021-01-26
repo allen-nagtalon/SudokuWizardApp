@@ -23,6 +23,24 @@ class SudokuGameActivity : AppCompatActivity(), BoardView.OnTouchListener {
         viewModel.sudokuGame
             .selectedCellLiveData.observe(this, Observer { updateSelectedCellUI(it)})
         viewModel.sudokuGame.cellsLiveData.observe(this, Observer { updateCells(it) })
+
+        val buttons = listOf(one_button, two_button, three_button,
+            four_button, five_button, six_button, seven_button,
+            eight_button, nine_button)
+
+        buttons.forEachIndexed { index, button ->
+            button.setOnClickListener {
+                viewModel.sudokuGame.handleInput(index + 1)
+            }
+        }
+
+        clear_button.setOnClickListener {
+            viewModel.sudokuGame.handleInput(0)
+        }
+
+        solve_button.setOnClickListener {
+            viewModel.sudokuGame.solve()
+        }
     }
 
     private fun updateCells(cells : Array<Array<Cell>>?) = cells?.let {
