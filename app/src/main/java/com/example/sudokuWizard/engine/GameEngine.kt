@@ -40,6 +40,12 @@ class GameEngine(val rows : Int,
         cellsLiveData.postValue(board.board)
     }
 
+    fun solve() {
+        val solver = BacktrackingSolver(board)
+        solver.solve()
+        cellsLiveData.postValue(board.board)
+    }
+
     fun updateSelectedCell(row : Int, col : Int) {
         selectedRow = row
         selectedCol = col

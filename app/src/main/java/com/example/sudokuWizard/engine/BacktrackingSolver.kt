@@ -2,8 +2,7 @@ package com.example.sudokuWizard.engine
 
 /** BacktrackingSolver is a sudoku solver that uses a backtracking algorithm to
  *  test all possible values in all empty cells of a given puzzle.*/
-class BacktrackingSolver(private val board : Board) :
-    SudokuSolver {
+class BacktrackingSolver(private val board : Board) : SudokuSolver {
 
     /** Private Functions *********/
 
