@@ -25,6 +25,15 @@ class Board(
 
     fun getCell(row : Int, col : Int) = board[row][col]
 
+    fun clear() {
+        board.forEach {
+            it.forEach {
+                it.value = 0
+                it.permanent = false
+            }
+        }
+    }
+
     fun printBoard() {
         for(row in board) {
             for(col in row) {

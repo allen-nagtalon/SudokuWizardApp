@@ -46,6 +46,11 @@ class GameEngine(val rows : Int,
         cellsLiveData.postValue(board.board)
     }
 
+    fun clear() {
+        board.clear()
+        cellsLiveData.postValue(board.board)
+    }
+
     fun updateSelectedCell(row : Int, col : Int) {
         selectedRow = row
         selectedCol = col

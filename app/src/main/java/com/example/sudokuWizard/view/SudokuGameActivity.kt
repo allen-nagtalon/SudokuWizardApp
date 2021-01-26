@@ -41,6 +41,10 @@ class SudokuGameActivity : AppCompatActivity(), BoardView.OnTouchListener {
         solve_button.setOnClickListener {
             viewModel.sudokuGame.solve()
         }
+
+        clear_board_button.setOnClickListener {
+            viewModel.sudokuGame.clear()
+        }
     }
 
     private fun updateCells(cells : Array<Array<Cell>>?) = cells?.let {
