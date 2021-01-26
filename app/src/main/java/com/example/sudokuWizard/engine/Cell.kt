@@ -1,3 +1,3 @@
 package com.example.sudokuWizard.engine
 
-class Cell (var value : Int, val permanent : Boolean)
+class Cell (val row : Int, val col : Int, var value : Int, val permanent : Boolean)
