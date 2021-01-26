@@ -9,6 +9,7 @@ class GameEngine(val rows : Int,
                  val boardLayout : String) {
 
     var selectedCellLiveData = MutableLiveData<Pair<Int, Int>>()
+    var cellsLiveData = MutableLiveData<Array<Array<Cell>>>()
 
     private var selectedRow = -1
     private var selectedCol = -1
@@ -21,14 +22,22 @@ class GameEngine(val rows : Int,
 
         val cells = List(rows*cols) {i ->
             when(cellValues[i].toInt()) {
-                0 -> Cell(0, false)
-                else -> Cell(cellValues[i].toInt(), true)
+                0 -> Cell(i / cols, i % cols, 0, false)
+                else -> Cell(i / cols, i % cols, cellValues[i].toInt(), true)
             }
         }
 
         board = Board(cells)
 
         selectedCellLiveData.postValue(Pair(selectedRow, selectedCol))
+        cellsLiveData.postValue(board.board)
+    }
+
+    fun handleInput(number : Int) {
+        if (selectedRow == -1 || selectedCol == -1) return
+
+        board.getCell(selectedRow, selectedCol).value = number
+        cellsLiveData.postValue(board.board)
     }
 
     fun updateSelectedCell(row : Int, col : Int) {
