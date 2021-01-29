@@ -10,6 +10,7 @@ class GameEngine(val rows : Int,
 
     var selectedCellLiveData = MutableLiveData<Pair<Int, Int>>()
     var cellsLiveData = MutableLiveData<Array<Array<Cell>>>()
+    var editSettingLiveData = MutableLiveData<Boolean>()
 
     private var selectedRow = -1
     private var selectedCol = -1
@@ -22,7 +23,7 @@ class GameEngine(val rows : Int,
 
         val cells = List(rows*cols) {i ->
             when(cellValues[i].toInt()) {
-                0 -> Cell(i / cols, i % cols, 0, false)
+                0 -> Cell(i / cols, i % cols, 0)
                 else -> Cell(i / cols, i % cols, cellValues[i].toInt(), true)
             }
         }
@@ -31,10 +32,12 @@ class GameEngine(val rows : Int,
 
         selectedCellLiveData.postValue(Pair(selectedRow, selectedCol))
         cellsLiveData.postValue(board.board)
+        editSettingLiveData.postValue(false)
     }
 
     fun handleInput(number : Int) {
         if (selectedRow == -1 || selectedCol == -1) return
+        if(board.getCell(selectedRow, selectedCol).permanent) return
 
         board.getCell(selectedRow, selectedCol).value = number
         cellsLiveData.postValue(board.board)
@@ -52,9 +55,11 @@ class GameEngine(val rows : Int,
     }
 
     fun updateSelectedCell(row : Int, col : Int) {
-        selectedRow = row
-        selectedCol = col
-        selectedCellLiveData.postValue(Pair(row, col))
+        if(!board.getCell(row, col).permanent) {
+            selectedRow = row
+            selectedCol = col
+            selectedCellLiveData.postValue(Pair(row, col))
+        }
     }
 
     fun updateBoardSettings(rows : Int, cols : Int, rowSubSize : Int, colSubSize : Int) {
