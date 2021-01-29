@@ -1,14 +1,12 @@
 package com.example.sudokuWizard.view
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import com.example.sudokuWizard.engine.Cell
+import kotlin.math.min
 
 class BoardView(context : Context,
                 attributeSet : AttributeSet) : View(context, attributeSet) {
@@ -44,6 +42,11 @@ class BoardView(context : Context,
         color = Color.parseColor("#6ead3a")
     }
 
+    private val permanentCellPaint = Paint().apply {
+        style = Paint.Style.FILL_AND_STROKE
+        color = Color.parseColor("#acacac")
+    }
+
     private val relatedCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
         color = Color.parseColor("#efedef")
@@ -55,11 +58,18 @@ class BoardView(context : Context,
         textSize = 24F
     }
 
+    private val permanentCellTextPaint = Paint().apply {
+        style = Paint.Style.FILL_AND_STROKE
+        color = Color.BLACK
+        textSize = 32F
+        typeface = Typeface.DEFAULT_BOLD
+    }
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         // Set height and width of the SudokuBoardView to be the min of the two dimensions
-        val size = Math.min(widthMeasureSpec, heightMeasureSpec)
+        val size = min(widthMeasureSpec, heightMeasureSpec)
         setMeasuredDimension(size, size)
 
         /** Adjust this later to account for varying sized boards. **/
@@ -102,12 +112,14 @@ class BoardView(context : Context,
     }
 
     private fun fillCells(canvas : Canvas) {
-        cells?.forEach {
-            it.forEach {
+        cells?.forEach { row ->
+            row.forEach {
                 val r = it.row
                 val c = it.col
 
-                if(r == selectedRow && c == selectedCol) {
+                if(it.permanent) {
+                    fillCellColor(canvas, r, c, permanentCellPaint)
+                } else if(r == selectedRow && c == selectedCol) {
                     fillCellColor(canvas, r, c, selectedCellPaint)
                 } else if (r == selectedRow || c == selectedCol) {
                     fillCellColor(canvas, r, c, relatedCellPaint)
@@ -120,23 +132,24 @@ class BoardView(context : Context,
     }
 
     private fun drawText(canvas : Canvas) {
-        cells?.forEach {
-            it.forEach {
+        cells?.forEach { row ->
+            row.forEach {
                 if(it.value != 0) {
                     val row = it.row
                     val col = it.col
                     val valString = it.value.toString()
+                    val paintToUse = if(it.permanent) permanentCellTextPaint else textPaint
                     val textBounds = Rect()
 
-                    textPaint.getTextBounds(valString, 0, valString.length, textBounds)
+                    paintToUse.getTextBounds(valString, 0, valString.length, textBounds)
 
-                    val textWidth = textPaint.measureText(valString)
+                    val textWidth = paintToUse.measureText(valString)
                     val textHeight = textBounds.height()
 
                     canvas.drawText(valString,
                         (col * cellPixelSize) + cellPixelSize / 2 - textWidth / 2,
                         (row * cellPixelSize) + cellPixelSize / 2 - textHeight / 2,
-                        textPaint)
+                        paintToUse)
                 }
             }
         }
