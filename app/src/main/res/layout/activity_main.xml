@@ -28,7 +28,7 @@
         android:layout_marginBottom="32dp"
         android:text="@string/clear_board_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button3" />
+        app:layout_constraintEnd_toStartOf="@+id/edit_button" />
 
     <Button
         android:id="@+id/solve_button"
@@ -40,10 +40,10 @@
         android:layout_marginBottom="32dp"
         android:text="@string/solve_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button3" />
+        app:layout_constraintStart_toEndOf="@+id/edit_button" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/edit_button"
 
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="100dp"
