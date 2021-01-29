@@ -10,7 +10,7 @@ class GameEngine(val rows : Int,
 
     var selectedCellLiveData = MutableLiveData<Pair<Int, Int>>()
     var cellsLiveData = MutableLiveData<Array<Array<Cell>>>()
-    var editSettingLiveData = MutableLiveData<Boolean>()
+    var boardEditEnabled = false
 
     private var selectedRow = -1
     private var selectedCol = -1
@@ -32,14 +32,16 @@ class GameEngine(val rows : Int,
 
         selectedCellLiveData.postValue(Pair(selectedRow, selectedCol))
         cellsLiveData.postValue(board.board)
-        editSettingLiveData.postValue(false)
+        boardEditEnabled = false
     }
 
     fun handleInput(number : Int) {
         if (selectedRow == -1 || selectedCol == -1) return
-        if(board.getCell(selectedRow, selectedCol).permanent) return
+        if(board.getCell(selectedRow, selectedCol).permanent && !boardEditEnabled) return
+
 
         board.getCell(selectedRow, selectedCol).value = number
+        if(boardEditEnabled) board.getCell(selectedRow, selectedCol).permanent = true
         cellsLiveData.postValue(board.board)
     }
 
@@ -54,8 +56,12 @@ class GameEngine(val rows : Int,
         cellsLiveData.postValue(board.board)
     }
 
+    fun enableBoardEdit() {
+        boardEditEnabled = !boardEditEnabled
+    }
+
     fun updateSelectedCell(row : Int, col : Int) {
-        if(!board.getCell(row, col).permanent) {
+        if(!board.getCell(row, col).permanent || boardEditEnabled) {
             selectedRow = row
             selectedCol = col
             selectedCellLiveData.postValue(Pair(row, col))

@@ -42,6 +42,10 @@ class SudokuGameActivity : AppCompatActivity(), BoardView.OnTouchListener {
             viewModel.sudokuGame.solve()
         }
 
+        edit_button.setOnClickListener {
+            viewModel.sudokuGame.enableBoardEdit()
+        }
+
         clear_board_button.setOnClickListener {
             viewModel.sudokuGame.clear()
         }
