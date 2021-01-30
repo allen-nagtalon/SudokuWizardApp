@@ -50,10 +50,11 @@ class GameEngine(val rows : Int,
         cellsLiveData.postValue(board.board)
     }
 
-    fun solve() {
+    fun solve() : Boolean{
         val solver = BacktrackingSolver(board)
-        solver.solve()
+        val solved = solver.solve()
         cellsLiveData.postValue(board.board)
+        return solved
     }
 
     fun clear() {

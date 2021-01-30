@@ -3,6 +3,7 @@ package com.example.sudokuWizard.view
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.sudokuWizard.R
@@ -39,7 +40,9 @@ class SudokuGameActivity : AppCompatActivity(), BoardView.OnTouchListener {
         }
 
         solve_button.setOnClickListener {
-            viewModel.sudokuGame.solve()
+            if(!viewModel.sudokuGame.solve()) {
+                Toast.makeText(this, "Error: Board could not be solved.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         edit_button.setOnClickListener {
