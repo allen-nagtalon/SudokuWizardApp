@@ -41,7 +41,12 @@ class GameEngine(val rows : Int,
 
 
         board.getCell(selectedRow, selectedCol).value = number
-        if(boardEditEnabled) board.getCell(selectedRow, selectedCol).permanent = true
+        if(boardEditEnabled) {
+            when(number) {
+                0 -> board.getCell(selectedRow, selectedCol).permanent = false
+                else -> board.getCell(selectedRow, selectedCol).permanent = true
+            }
+        }
         cellsLiveData.postValue(board.board)
     }
 
