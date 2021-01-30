@@ -1,4 +1,4 @@
-package com.example.sudokuWizard.view
+package com.example.sudokuWizard.view.customview
 
 import android.content.Context
 import android.graphics.*

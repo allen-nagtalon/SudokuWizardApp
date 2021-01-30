@@ -1,7 +1,5 @@
 package com.example.sudokuWizard.engine
 
-import androidx.lifecycle.MutableLiveData
-
 class Board(
     private val cells: List<Cell>,
     val MAX_VALUE : Int,
