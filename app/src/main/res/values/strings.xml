@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">SudokuWizardApp</string>
 
+    <!-- Main Menu Buttons -->
+    <string name="board_editor_button">Start Board</string>
+    <string name="board_scan_button">Scan Board</string>
+
     <!-- General Buttons -->
     <string name="solve_button">Solve</string>
     <string name="edit_button">Edit</string>
@@ -17,4 +21,7 @@
     <string name="eight_button">8</string>
     <string name="nine_button">9</string>
     <string name="clear_cell_button">C</string>
+
+    <!-- PLACEHOLDERS -->
+    <string name="title_placeholder">Sudoku Wizard</string>
 </resources>
