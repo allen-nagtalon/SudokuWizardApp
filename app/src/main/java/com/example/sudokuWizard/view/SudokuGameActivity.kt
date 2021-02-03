@@ -1,6 +1,6 @@
 package com.example.sudokuWizard.view
 
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_sudoku_game.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -17,7 +17,7 @@ class SudokuGameActivity : AppCompatActivity(), BoardView.OnTouchListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_sudoku_game)
 
         board_view.registerListener(this)
 
