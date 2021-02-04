@@ -16,4 +16,9 @@ class MainMenuActivity : AppCompatActivity() {
         val intent = Intent(this, SudokuGameActivity::class.java)
         startActivity(intent)
     }
+
+    fun startScanBoard(view : View) {
+        val intent = Intent(this, ScanBoardActivity::class.java)
+        startActivity(intent)
+    }
 }
