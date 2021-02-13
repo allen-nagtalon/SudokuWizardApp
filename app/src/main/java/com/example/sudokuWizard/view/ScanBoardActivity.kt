@@ -1,24 +1,30 @@
 package com.example.sudokuWizard.view
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 import com.example.sudokuWizard.R
+import com.google.android.gms.tasks.Task
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.Text
+import com.google.mlkit.vision.text.TextRecognition
 import kotlinx.android.synthetic.main.activity_scan_board.*
-
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class ScanBoardActivity : AppCompatActivity() {
+
+    private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +36,11 @@ class ScanBoardActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                     this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
+
+        cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
+    @SuppressLint("UnsafeExperimentalUsageError")
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -48,9 +57,18 @@ class ScanBoardActivity : AppCompatActivity() {
 
             // Build CameraX Analyzer
             val imageAnalyzer = ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
-                    // SET ANALYZER HERE
+                    it.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer { image ->
+                        val rotationDegrees = image.imageInfo.rotationDegrees
+                        val mediaImage = image.image
+                        if(mediaImage != null) {
+                            requestProcessImage(
+                                    InputImage.fromMediaImage(mediaImage, rotationDegrees))
+                                    .addOnCompleteListener{ image.close() }
+                        }
+                    })
                 }
 
             // Select back camera
@@ -62,7 +80,7 @@ class ScanBoardActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview)
+                    this, cameraSelector, preview, imageAnalyzer)
 
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
@@ -71,22 +89,22 @@ class ScanBoardActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
+    fun requestProcessImage(image : InputImage) : Task<Text> {
+        val textRecognizer = TextRecognition.getClient()
+        return textRecognizer.process(image)
+                .addOnSuccessListener {results ->
+                    Log.d(TAG, "SUCCESS: ${results.text}")
+                    test_text_view.setText(results.text)
+                }
+                .addOnFailureListener {
+                    Log.d(TAG, "FAILED")
+                }
+    }
+
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
                 baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
-
-    /**
-    private class TextScanAnalyzer : ImageAnalysis.Analyzer {
-
-        override fun analyze(imageProxy: ImageProxy) {
-            val mediaImage = imageProxy.image
-            if(mediaImage != null) {
-                val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-
-            }
-        }
-    } **/
 
     companion object {
         private const val TAG = "CameraX"
