@@ -95,6 +95,7 @@ class ScanBoardActivity : AppCompatActivity() {
                 .addOnSuccessListener {results ->
                     Log.d(TAG, "SUCCESS: ${results.text}")
                     test_text_view.setText(results.text)
+
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "FAILED")

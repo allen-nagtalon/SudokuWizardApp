@@ -69,7 +69,7 @@ class BoardView(context : Context,
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         // Set height and width of the SudokuBoardView to be the min of the two dimensions
-        val size = min(widthMeasureSpec, heightMeasureSpec)
+        val size = min(widthMeasureSpec - 64, heightMeasureSpec- 64)
         setMeasuredDimension(size, size)
 
         /** Adjust this later to account for varying sized boards. **/
