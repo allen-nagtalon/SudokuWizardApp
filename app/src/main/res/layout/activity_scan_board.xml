@@ -12,6 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.example.sudokuWizard.view.customview.BoardOverlayView
+        android:id="@+id/board_overlay_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view_finder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />/>
+
     <TextView
         android:id="@+id/test_text_view"
         android:layout_width="wrap_content"
