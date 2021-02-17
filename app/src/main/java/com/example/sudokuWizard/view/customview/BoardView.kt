@@ -69,7 +69,8 @@ class BoardView(context : Context,
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         // Set height and width of the SudokuBoardView to be the min of the two dimensions
-        val size = min(widthMeasureSpec - 64, heightMeasureSpec- 64)
+        val size = min(widthMeasureSpec - 64 - (widthMeasureSpec % 9),
+                heightMeasureSpec- 64 - (heightMeasureSpec % 9))
         setMeasuredDimension(size, size)
 
         /** Adjust this later to account for varying sized boards. **/
@@ -85,8 +86,6 @@ class BoardView(context : Context,
     }
 
     private fun drawFrame(canvas : Canvas) {
-        canvas.drawRect(0F, 0F, width.toFloat(), height.toFloat(), thickLinePaint)
-
         for(i in 1 until rows) {
             val lineThickness = when (i % rowSubSize) {
                 0 -> thickLinePaint
@@ -109,6 +108,8 @@ class BoardView(context : Context,
                     lineThickness
             )
         }
+
+        canvas.drawRect(0F, 0F, width.toFloat(), height.toFloat(), thickLinePaint)
     }
 
     private fun fillCells(canvas : Canvas) {

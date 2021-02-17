@@ -42,6 +42,8 @@ class BoardOverlayView(context : Context,
     }
 
     override fun onDraw(canvas : Canvas) {
+        cellPixelSize = (width / rows).toFloat()
+
         drawFrame(canvas)
     }
 
