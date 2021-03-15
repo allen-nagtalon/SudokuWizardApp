@@ -16,7 +16,7 @@
         android:id="@+id/board_overlay_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/view_finder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
