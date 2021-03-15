@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_menu_bg"
     tools:context=".view.MainMenuActivity">
 
     <Button
@@ -12,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:onClick="startSudokuGame"
-        android:text="@string/board_editor_button"
         app:layout_constraintBottom_toTopOf="@+id/board_scan_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
         android:onClick="startScanBoard"
-        android:text="@string/board_scan_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
