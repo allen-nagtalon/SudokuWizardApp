@@ -93,12 +93,10 @@ class ScanBoardActivity : AppCompatActivity() {
         val textRecognizer = TextRecognition.getClient()
         return textRecognizer.process(image)
                 .addOnSuccessListener {results ->
-                    Log.d(TAG, "SUCCESS: ${results.text}")
-                    test_text_view.setText(results.text)
-
+                    board_overlay_view.processScan(results)
                 }
                 .addOnFailureListener {
-                    Log.d(TAG, "FAILED")
+                    Log.d(TAG, "No Scan")
                 }
     }
 

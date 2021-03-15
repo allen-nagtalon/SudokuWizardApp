@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import com.google.mlkit.vision.text.Text
 import kotlin.math.min
 
 class BoardOverlayView(context : Context,
@@ -71,6 +72,19 @@ class BoardOverlayView(context : Context,
                     i*cellPixelSize,
                     lineThickness
             )
+        }
+    }
+
+    fun processScan(results: Text) {
+        for(block in results.textBlocks) {
+            for(line in block.lines) {
+                for(element in line.elements) {
+                    // Check if the element is a single digit
+                    if(element.text.length == 1 && Character.isDigit(element.text[0])) {
+
+                    }
+                }
+            }
         }
     }
 }
