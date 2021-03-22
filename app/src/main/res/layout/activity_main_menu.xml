@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/scan_board_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/new_button_states" />
+        app:srcCompat="@drawable/mm_new_button_states" />
 
     <ImageButton
         android:id="@+id/scan_board_button"
@@ -29,7 +29,7 @@
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/new_board_button"
-        app:srcCompat="@drawable/scan_button_states" />
+        app:srcCompat="@drawable/mm_scan_button_states" />
 
     <ImageView
         android:id="@+id/imageView"
