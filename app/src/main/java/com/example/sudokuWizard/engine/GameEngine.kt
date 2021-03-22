@@ -11,6 +11,7 @@ class GameEngine(val rows : Int,
     var selectedCellLiveData = MutableLiveData<Pair<Int, Int>>()
     var cellsLiveData = MutableLiveData<Array<Array<Cell>>>()
     var boardEditEnabled = false
+    var pencilEnabled = false
 
     private var selectedRow = -1
     private var selectedCol = -1
@@ -36,11 +37,20 @@ class GameEngine(val rows : Int,
     }
 
     fun handleInput(number : Int) {
-        if (selectedRow == -1 || selectedCol == -1) return
+        // No cell selected
+        if(selectedRow == -1 || selectedCol == -1) return
+
+        // Board Edit is not enabled and selected cell is permanent
         if(board.getCell(selectedRow, selectedCol).permanent && !boardEditEnabled) return
 
+        // Add note or mark cell
+        if(pencilEnabled) {
+            var cell = board.getCell(selectedRow, selectedCol)
+            cell.notes[number-1] = !cell.notes[number-1]
+        } else {
+            board.getCell(selectedRow, selectedCol).value = number
+        }
 
-        board.getCell(selectedRow, selectedCol).value = number
         if(boardEditEnabled) {
             when(number) {
                 0 -> board.getCell(selectedRow, selectedCol).permanent = false
@@ -64,6 +74,19 @@ class GameEngine(val rows : Int,
 
     fun enableBoardEdit() {
         boardEditEnabled = !boardEditEnabled
+        pencilEnabled = false
+    }
+
+    fun enablePenEdit() {
+        if(pencilEnabled) pencilEnabled = false
+    }
+
+    fun enablePencilEdit() {
+        // Return if board edit mode is on
+        if(boardEditEnabled) return
+
+        // Switch between pen and pencil mode
+        if(!pencilEnabled) pencilEnabled = true
     }
 
     fun updateSelectedCell(row : Int, col : Int) {
@@ -71,6 +94,9 @@ class GameEngine(val rows : Int,
             selectedRow = row
             selectedCol = col
             selectedCellLiveData.postValue(Pair(row, col))
+
+            // TEST CODE
+            board.getCell(row, col).printCellInfo()
         }
     }
 

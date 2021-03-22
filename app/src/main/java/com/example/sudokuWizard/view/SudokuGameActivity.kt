@@ -40,6 +40,14 @@ class SudokuGameActivity : AppCompatActivity(), BoardView.OnTouchListener {
             viewModel.sudokuGame.handleInput(0)
         }
 
+        pen_button.setOnClickListener {
+            viewModel.sudokuGame.enablePenEdit()
+        }
+
+        pencil_button.setOnClickListener {
+            viewModel.sudokuGame.enablePencilEdit()
+        }
+
         solve_button.setOnClickListener {
             if(!viewModel.sudokuGame.solve()) {
                 Toast.makeText(this, "Error: Board could not be solved.", Toast.LENGTH_SHORT).show()
