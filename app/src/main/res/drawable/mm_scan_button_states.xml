@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/scan_button_pressed" />
+        android:drawable="@drawable/mm_scan_button_pressed" />
     <item
-        android:drawable="@drawable/scan_button_unpressed" />
+        android:drawable="@drawable/mm_scan_button_default" />
 </selector>
