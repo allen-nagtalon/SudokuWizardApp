@@ -42,10 +42,16 @@ class BoardViewRemake(context: Context, attributeSet : AttributeSet) : View(cont
 
     /**** Text Paints ****************************************/
 
+    private val notePaint = Paint().apply {
+        style = Paint.Style.FILL_AND_STROKE
+        color = Color.BLACK
+        textSize = 12F
+    }
+
     private val textPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
         color = Color.BLACK
-        textSize = 32F
+        textSize = 48F
     }
 
     private val permanentCellTextPaint = Paint().apply {
@@ -93,7 +99,7 @@ class BoardViewRemake(context: Context, attributeSet : AttributeSet) : View(cont
                 val r = it.row
                 val c = it.col
 
-                
+
             }
 
         }
@@ -185,6 +191,18 @@ class BoardViewRemake(context: Context, attributeSet : AttributeSet) : View(cont
                             paintToUse)
 
                     yBuffer += curY
+                }
+                else {
+                    for(i in it.notes.indices) {
+                        if(it.notes[i]) {
+                            val r = it.row
+                            val c = it.col
+                            val valString = (i+1).toString()
+                            val textBounds = Rect()
+
+
+                        }
+                    }
                 }
             }
             xBuffer += curX
