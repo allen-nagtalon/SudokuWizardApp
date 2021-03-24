@@ -25,6 +25,12 @@ class BoardView(context : Context,
 
     private var cells : Array<Array<Cell>>? = null
 
+    private val borderLinePaint = Paint().apply {
+        style = Paint.Style.STROKE
+        color = Color.BLACK
+        strokeWidth = 7F
+    }
+
     private val thickLinePaint = Paint().apply {
         style = Paint.Style.STROKE
         color = Color.BLACK
@@ -86,7 +92,7 @@ class BoardView(context : Context,
     }
 
     private fun drawFrame(canvas : Canvas) {
-        for(i in 1 until rows) {
+        for(i in 0..9) {
             val lineThickness = when (i % rowSubSize) {
                 0 -> thickLinePaint
                 else -> thinLinePaint
@@ -104,7 +110,7 @@ class BoardView(context : Context,
                     0F,
                     i * cellPixelSize,
                     width.toFloat(),
-                    i*cellPixelSize,
+                    i * cellPixelSize,
                     lineThickness
             )
         }
