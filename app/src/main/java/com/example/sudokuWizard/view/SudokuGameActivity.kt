@@ -9,9 +9,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.sudokuWizard.R
 import com.example.sudokuWizard.engine.Cell
 import com.example.sudokuWizard.view.customview.BoardView
+import com.example.sudokuWizard.view.customview.BoardViewRemake
 import com.example.sudokuWizard.viewmodel.BoardViewModel
 
-class SudokuGameActivity : AppCompatActivity(), BoardView.OnTouchListener {
+class SudokuGameActivity : AppCompatActivity(), BoardViewRemake.OnTouchListener {
 
     private lateinit var viewModel : BoardViewModel
 
