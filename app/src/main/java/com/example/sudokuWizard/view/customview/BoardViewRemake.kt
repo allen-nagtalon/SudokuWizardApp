@@ -8,7 +8,8 @@ import android.view.View
 import com.example.sudokuWizard.engine.Cell
 import kotlin.math.min
 
-class BoardViewRemake(context: Context, attributeSet : AttributeSet) : View(context, attributeSet) {
+class BoardViewRemake(context: Context,
+                      attributeSet : AttributeSet) : View(context, attributeSet) {
 
     private var cellPixelSize = 0F
 
@@ -45,7 +46,7 @@ class BoardViewRemake(context: Context, attributeSet : AttributeSet) : View(cont
     private val notePaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
         color = Color.BLACK
-        textSize = 12F
+        textSize = 24F
     }
 
     private val textPaint = Paint().apply {
@@ -79,13 +80,13 @@ class BoardViewRemake(context: Context, attributeSet : AttributeSet) : View(cont
         val minDim = min(widthMeasureSpec - 64 - ((widthMeasureSpec - 64) % 9),
                 heightMeasureSpec - 64 - ((heightMeasureSpec - 64) % 9))
 
-        val size = minDim + 28
+        val size = minDim + 34
 
         setMeasuredDimension(size, size)
     }
 
     override fun onDraw(canvas: Canvas) {
-        cellPixelSize = ((width - 28)/ 9).toFloat()
+        cellPixelSize = ((width - 34)/ 9).toFloat()
 
         drawFrame(canvas)
         drawText(canvas)
@@ -152,33 +153,34 @@ class BoardViewRemake(context: Context, attributeSet : AttributeSet) : View(cont
 
         cells?.forEach { row ->
             val curRow = row[0].row
-            val curX = when (curRow % 3) {
+            val curY = when (curRow % 3) {
                 0 -> {
-                    if (curRow == 0 || curRow == 9) 4F
-                    else 2F
+                    if (curRow == 0 || curRow == 9) 8F
+                    else 4F
                 }
-                else -> 1F
+                else -> 2F
             }
-            xBuffer += curX
+            yBuffer += curY
 
             row.forEach {
+                val curCol = it.col
+                val curX = when (curCol % 3) {
+                    0 -> {
+                        if (curCol == 0 || curCol == 9) 8F
+                        else 4F
+                    }
+                    else -> 2F
+                }
+
+                xBuffer += curX
+
                 if (it.value != 0) {
                     val row = it.row
                     val col = it.col
 
-                    val curY = when (col % 3) {
-                        0 -> {
-                            if (col == 0 || col == 9) 4F
-                            else 2F
-                        }
-                        else -> 1F
-                    }
-
                     val valString = it.value.toString()
                     val paintToUse = if (it.permanent) permanentCellTextPaint else textPaint
                     val textBounds = Rect()
-
-                    yBuffer += curY
 
                     paintToUse.getTextBounds(valString, 0, valString.length, textBounds)
 
@@ -190,23 +192,41 @@ class BoardViewRemake(context: Context, attributeSet : AttributeSet) : View(cont
                             (row * cellPixelSize) + cellPixelSize / 2 + textHeight / 2 + yBuffer,
                             paintToUse)
 
-                    yBuffer += curY
                 }
+                /*
                 else {
                     for(i in it.notes.indices) {
                         if(it.notes[i]) {
-                            val r = it.row
-                            val c = it.col
+                            val row = it.row
+                            val col = it.col
                             val valString = (i+1).toString()
                             val textBounds = Rect()
 
+                            notePaint.getTextBounds(valString, 0, valString.length, textBounds)
 
+                            val textWidth = notePaint.measureText(valString)
+                            val textHeight = textBounds.height()
+
+                            val finalX = (col * cellPixelSize) +
+                                    (cellPixelSize / 2) -
+                                    (textWidth / 2) +
+                                    xBuffer +
+                                    ((i % 3 - 1) * cellPixelSize / 3)
+                            val finalY = (row * cellPixelSize) +
+                                    (cellPixelSize / 2) +
+                                    (textHeight / 2) +
+                                    yBuffer +
+                                    ((i / 3 - 1) * cellPixelSize / 3)
+
+                            canvas.drawText(valString,
+                                    finalX,
+                                    finalY,
+                                    notePaint)
                         }
                     }
-                }
+                }*/
             }
-            xBuffer += curX
-            yBuffer = 0F
+            xBuffer = 0F
         }
     }
 
