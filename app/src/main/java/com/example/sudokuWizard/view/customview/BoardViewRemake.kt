@@ -193,7 +193,6 @@ class BoardViewRemake(context: Context,
                             paintToUse)
 
                 }
-                /*
                 else {
                     for(i in it.notes.indices) {
                         if(it.notes[i]) {
@@ -224,7 +223,7 @@ class BoardViewRemake(context: Context,
                                     notePaint)
                         }
                     }
-                }*/
+                }
             }
             xBuffer = 0F
         }
