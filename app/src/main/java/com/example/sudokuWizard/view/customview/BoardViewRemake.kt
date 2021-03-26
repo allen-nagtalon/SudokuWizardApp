@@ -16,6 +16,8 @@ class BoardViewRemake(context: Context,
     private var selectedRow = -1
     private var selectedCol = -1
 
+    private val bufferValues = arrayOf(8F, 10F, 12F, 16F, 18F, 20F, 24F, 26F, 28F)
+
     private var listener : OnTouchListener? = null
 
     private var cells : Array<Array<Cell>>? = null
