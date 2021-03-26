@@ -6,14 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".view.SudokuGameActivity">
 
+    <ImageView
+        android:id="@+id/background_1"
+        android:layout_width="match_parent"
+        android:layout_height="275dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/sudoku_game_background_1" />
+
+    <ImageView
+        android:id="@+id/background_2"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/sudoku_game_background_2" />
+
+    <ImageView
+        android:id="@+id/background_3"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/background_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/sudoku_game_background_2" />
+
     <com.example.sudokuWizard.view.customview.BoardViewRemake
         android:id="@+id/board_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/background_3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/background_2" />
 
     <Button
         android:id="@+id/clear_board_button"
@@ -22,7 +51,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/clear_board_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/edit_button" />
@@ -34,7 +63,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/solve_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/edit_button" />
@@ -45,7 +74,7 @@
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/edit_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,12 +97,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@null"
+        android:contentDescription="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.38"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/board_view"
-        app:srcCompat="@drawable/numpad_button_two_states"
-        android:contentDescription="@null"/>
+        app:layout_constraintTop_toTopOf="@+id/background_1"
+        app:srcCompat="@drawable/numpad_button_two_states" />
 
     <ImageButton
         android:id="@+id/three_button"
