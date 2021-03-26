@@ -90,6 +90,7 @@ class BoardViewRemake(context: Context,
     override fun onDraw(canvas: Canvas) {
         cellPixelSize = ((width - 34)/ 9).toFloat()
 
+        fillCells(canvas)
         drawFrame(canvas)
         drawText(canvas)
     }
@@ -101,18 +102,23 @@ class BoardViewRemake(context: Context,
                 val col = it.col
 
                 if(row == selectedRow && col == selectedCol) {
-
+                    fillCellColor(canvas, row, col, selectedCellPaint)
                 } else if (row == selectedRow || col == selectedCol) {
-
+                    fillCellColor(canvas, row, col, relatedCellPaint)
                 } else if (row > 0 && row / 3 == selectedRow / 3 && col / 3 == selectedCol / 3) {
-
+                    fillCellColor(canvas, row, col, relatedCellPaint)
                 }
             }
         }
     }
 
     private fun fillCellColor(canvas: Canvas, r: Int, c: Int, paint: Paint) {
-
+        canvas.drawRect(
+                bufferValues[c] + (cellPixelSize * c),
+                bufferValues[r] + (cellPixelSize * r),
+                bufferValues[c] + (cellPixelSize * (c + 1)),
+                bufferValues[r] + (cellPixelSize * (r + 1)),
+                paint)
     }
 
     private fun drawFrame(canvas: Canvas) {
