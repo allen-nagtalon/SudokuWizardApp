@@ -105,7 +105,7 @@ class BoardViewRemake(context: Context,
                     fillCellColor(canvas, row, col, selectedCellPaint)
                 } else if (row == selectedRow || col == selectedCol) {
                     fillCellColor(canvas, row, col, relatedCellPaint)
-                } else if (row > 0 && row / 3 == selectedRow / 3 && col / 3 == selectedCol / 3) {
+                } else if (selectedRow > -1 && row / 3 == selectedRow / 3 && col / 3 == selectedCol / 3) {
                     fillCellColor(canvas, row, col, relatedCellPaint)
                 }
             }
