@@ -95,42 +95,19 @@ class BoardViewRemake(context: Context,
     }
 
     private fun fillCells(canvas: Canvas) {
-        var xBuffer = 0F
-        var yBuffer = 0F
         cells?.forEach { row ->
-            val curRow = row[0].row
-            val curY = when (curRow % 3) {
-                0 -> {
-                    if (curRow == 0 || curRow == 9) 8F
-                    else 4F
-                }
-                else -> 2F
-            }
-            yBuffer += curY
-
             row.forEach {
                 val row = it.row
                 val col = it.col
-                val curX = when (col % 3) {
-                    0 -> {
-                        if (col == 0 || col == 9) 8F
-                        else 4F
-                    }
-                    else -> 2F
-                }
-
-                xBuffer += curX
 
                 if(row == selectedRow && col == selectedCol) {
-                    
+
                 } else if (row == selectedRow || col == selectedCol) {
 
-                } else if (row / 3 == selectedRow / 3 && col / 3 == selectedCol / 3) {
+                } else if (row > 0 && row / 3 == selectedRow / 3 && col / 3 == selectedCol / 3) {
 
                 }
             }
-
-            xBuffer = 0F
         }
     }
 
@@ -184,27 +161,10 @@ class BoardViewRemake(context: Context,
         var yBuffer = 0F
 
         cells?.forEach { row ->
-            val curRow = row[0].row
-            val curY = when (curRow % 3) {
-                0 -> {
-                    if (curRow == 0 || curRow == 9) 8F
-                    else 4F
-                }
-                else -> 2F
-            }
-            yBuffer += curY
+            yBuffer = bufferValues[row[0].row]
 
             row.forEach {
-                val curCol = it.col
-                val curX = when (curCol % 3) {
-                    0 -> {
-                        if (curCol == 0 || curCol == 9) 8F
-                        else 4F
-                    }
-                    else -> 2F
-                }
-
-                xBuffer += curX
+                xBuffer = bufferValues[it.col]
 
                 if (it.value != 0) {
                     val row = it.row
