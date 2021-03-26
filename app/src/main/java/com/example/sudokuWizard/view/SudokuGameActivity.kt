@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.sudokuWizard.R
 import com.example.sudokuWizard.engine.Cell
-import com.example.sudokuWizard.view.customview.BoardView
 import com.example.sudokuWizard.view.customview.BoardViewRemake
 import com.example.sudokuWizard.viewmodel.BoardViewModel
 
