@@ -24,10 +24,13 @@ class Board(
     fun getCell(row : Int, col : Int) = board[row][col]
 
     fun clear() {
-        board.forEach {
-            it.forEach {
+        board.forEach { row ->
+            row.forEach {
                 it.value = 0
                 it.permanent = false
+                for(i in 0..8) {
+                    it.notes[i] = false
+                }
             }
         }
     }
