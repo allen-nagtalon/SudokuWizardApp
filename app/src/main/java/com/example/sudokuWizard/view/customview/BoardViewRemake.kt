@@ -238,8 +238,18 @@ class BoardViewRemake(context: Context,
     }
 
     private fun handleTouchEvent(x : Float, y : Float) {
-        val possibleSelectedRow = (y / cellPixelSize).toInt()
-        val possibleSelectedCol = (x / cellPixelSize).toInt()
+        val breakpoints = Array<Float>(9) {i ->
+            bufferValues[i] + cellPixelSize * i
+        }
+
+        var possibleSelectedRow = -1;
+        var possibleSelectedCol = -1;
+
+        for(i in 0..8) {
+            if(x > breakpoints[i]) possibleSelectedCol = i
+            if(y > breakpoints[i]) possibleSelectedRow = i
+        }
+
         listener?.onCellTouched(possibleSelectedRow, possibleSelectedCol)
     }
 
