@@ -238,7 +238,7 @@ class BoardViewRemake(context: Context,
     }
 
     private fun handleTouchEvent(x : Float, y : Float) {
-        val breakpoints = Array<Float>(9) {i ->
+        val breakpoints = Array(9) { i ->
             bufferValues[i] + cellPixelSize * i
         }
 
