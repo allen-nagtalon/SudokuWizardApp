@@ -10,17 +10,19 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/view_finder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+    </androidx.camera.view.PreviewView>
 
     <com.example.sudokuWizard.view.customview.BoardOverlayView
         android:id="@+id/board_overlay_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/view_finder"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />/>
+        app:layout_constraintStart_toStartOf="@+id/view_finder"
+        app:layout_constraintTop_toTopOf="@+id/view_finder" />/>
 
     <TextView
         android:id="@+id/test_text_view"
@@ -31,4 +33,47 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="#80000000"
+        app:layout_constraintBottom_toBottomOf="@+id/board_overlay_view"
+        app:layout_constraintEnd_toStartOf="@+id/board_overlay_view"
+        app:layout_constraintStart_toStartOf="@+id/view_finder"
+        app:layout_constraintTop_toTopOf="@+id/board_overlay_view" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="#80000000"
+        app:layout_constraintBottom_toBottomOf="@+id/board_overlay_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/board_overlay_view"
+        app:layout_constraintTop_toTopOf="@+id/board_overlay_view" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="#80000000"
+        app:layout_constraintBottom_toTopOf="@+id/board_overlay_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        android:background="#80000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/board_overlay_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>
