@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import com.google.mlkit.vision.text.Text
 import kotlin.math.min
@@ -80,9 +81,7 @@ class BoardOverlayView(context : Context,
             for(line in block.lines) {
                 for(element in line.elements) {
                     // Check if the element is a single digit
-                    if(element.text.length == 1 && Character.isDigit(element.text[0])) {
-
-                    }
+                    Log.d("SCANBOARD", "${element.text}: ${element.boundingBox}")
                 }
             }
         }

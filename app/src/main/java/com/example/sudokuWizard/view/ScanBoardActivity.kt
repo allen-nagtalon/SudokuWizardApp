@@ -10,13 +10,11 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 import com.example.sudokuWizard.R
 import com.google.android.gms.tasks.Task
-import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -85,6 +83,25 @@ class ScanBoardActivity : AppCompatActivity() {
                 val camera = cameraProvider.bindToLifecycle(
                     this, cameraSelector, preview, imageAnalyzer)
 
+                val cameraControl = camera.cameraControl
+
+                view_finder.setOnTouchListener(View.OnTouchListener { view: View, motionEvent: MotionEvent ->
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> true
+                        MotionEvent.ACTION_UP -> {
+                            val factory = view_finder.meteringPointFactory
+
+                            val point = factory.createPoint(motionEvent.x, motionEvent.y)
+
+                            val action = FocusMeteringAction.Builder(point).build()
+
+                            cameraControl.startFocusAndMetering(action)
+
+                            true
+                        }
+                        else -> false
+                    }
+                })
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
