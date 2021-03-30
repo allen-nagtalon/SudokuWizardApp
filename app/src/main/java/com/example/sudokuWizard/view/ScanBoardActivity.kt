@@ -6,15 +6,17 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
+import android.view.MotionEvent
+import android.view.View
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 import com.example.sudokuWizard.R
 import com.google.android.gms.tasks.Task
+import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -52,7 +54,8 @@ class ScanBoardActivity : AppCompatActivity() {
             val preview = Preview.Builder()
                 .build()
                 .also {
-                    it.setSurfaceProvider(view_finder.createSurfaceProvider())
+                    it.setSurfaceProvider(view_finder.surfaceProvider
+                    )
                 }
 
             // Build CameraX Analyzer
@@ -79,7 +82,7 @@ class ScanBoardActivity : AppCompatActivity() {
                 cameraProvider.unbindAll()
 
                 // Bind use cases to camera
-                cameraProvider.bindToLifecycle(
+                val camera = cameraProvider.bindToLifecycle(
                     this, cameraSelector, preview, imageAnalyzer)
 
             } catch(exc: Exception) {
@@ -89,10 +92,11 @@ class ScanBoardActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
-    fun requestProcessImage(image : InputImage) : Task<Text> {
+    private fun requestProcessImage(image : InputImage) : Task<Text> {
         val textRecognizer = TextRecognition.getClient()
         return textRecognizer.process(image)
                 .addOnSuccessListener {results ->
+                    test_text_view.text = results.text
                     board_overlay_view.processScan(results)
                 }
                 .addOnFailureListener {
