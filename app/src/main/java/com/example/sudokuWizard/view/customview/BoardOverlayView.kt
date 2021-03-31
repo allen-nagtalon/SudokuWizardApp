@@ -20,19 +20,6 @@ class BoardOverlayView(context : Context,
     private var rowSubSize = 3
     private var colSubSize = 3
 
-    /**** PAINT TYPES *****************************************************/
-    private val thickLinePaint = Paint().apply {
-        style = Paint.Style.STROKE
-        color = Color.BLACK
-        strokeWidth = 10F
-    }
-
-    private val thinLinePaint = Paint().apply {
-        style = Paint.Style.STROKE
-        color = Color.BLACK
-        strokeWidth = 2F
-    }
-
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
@@ -45,35 +32,6 @@ class BoardOverlayView(context : Context,
 
     override fun onDraw(canvas : Canvas) {
         cellPixelSize = (width / rows).toFloat()
-
-        drawFrame(canvas)
-    }
-
-    private fun drawFrame(canvas: Canvas) {
-        canvas.drawRect(0F, 0F, width.toFloat(), height.toFloat(), thickLinePaint)
-
-        for(i in 1 until rows) {
-            val lineThickness = when (i % rowSubSize) {
-                0 -> thickLinePaint
-                else -> thinLinePaint
-            }
-
-            canvas.drawLine(
-                    i * cellPixelSize,
-                    0F,
-                    i * cellPixelSize,
-                    height.toFloat(),
-                    lineThickness
-            )
-
-            canvas.drawLine(
-                    0F,
-                    i * cellPixelSize,
-                    width.toFloat(),
-                    i*cellPixelSize,
-                    lineThickness
-            )
-        }
     }
 
     fun processScan(results: Text) {
