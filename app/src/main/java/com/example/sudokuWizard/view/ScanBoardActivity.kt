@@ -63,22 +63,6 @@ class ScanBoardActivity : AppCompatActivity() {
             imageCapture = ImageCapture.Builder()
                 .build()
 
-            // Build CameraX Analyzer
-            val imageAnalyzer = ImageAnalysis.Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer { image ->
-                        val rotationDegrees = image.imageInfo.rotationDegrees
-                        val mediaImage = image.image
-                        if(mediaImage != null) {
-                            requestProcessImage(
-                                    InputImage.fromMediaImage(mediaImage, rotationDegrees))
-                                    .addOnCompleteListener{ image.close() }
-                        }
-                    })
-                }
-
             // Select back camera
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
@@ -88,7 +72,7 @@ class ScanBoardActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 val camera = cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture, imageAnalyzer)
+                    this, cameraSelector, preview, imageCapture)
 
                 val cameraControl = camera.cameraControl
 
@@ -126,12 +110,18 @@ class ScanBoardActivity : AppCompatActivity() {
                     Log.e(TAG, "Photo capture failed: ${exception.message}", exception)
                 }
 
+                @SuppressLint("UnsafeExperimentalUsageError")
                 override fun onCaptureSuccess(image: ImageProxy) {
                     Log.d(TAG, "Photo capture successful!")
-
+                    val rotationDegrees = image.imageInfo.rotationDegrees
+                    val mediaImage = image.image
+                    if(mediaImage != null) {
+                        requestProcessImage(
+                            InputImage.fromMediaImage(mediaImage, rotationDegrees))
+                            .addOnCompleteListener{ image.close() }
+                    }
                     // Process ImageAnalysis here
 
-                    image.close()
                 }
         })
     }
