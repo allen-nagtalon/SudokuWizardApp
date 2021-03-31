@@ -46,7 +46,11 @@ class GameEngine(val rows : Int,
         // Add note or mark cell
         if(pencilEnabled) {
             var cell = board.getCell(selectedRow, selectedCol)
-            cell.notes[number-1] = !cell.notes[number-1]
+            if(number == 0) {
+                for(i in cell.notes.indices) cell.notes[i] = false
+            } else {
+                cell.notes[number-1] = !cell.notes[number-1]
+            }
         } else {
             board.getCell(selectedRow, selectedCol).value = number
         }
