@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class ScanBoardActivity : AppCompatActivity() {
-
+    private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +32,10 @@ class ScanBoardActivity : AppCompatActivity() {
 
         if(allPermissionsGranted()) {
             startCamera()
+
+            image_capture_button.setOnClickListener{
+                takePhoto()
+            }
         } else {
             ActivityCompat.requestPermissions(
                     this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
@@ -55,6 +59,9 @@ class ScanBoardActivity : AppCompatActivity() {
                     it.setSurfaceProvider(view_finder.surfaceProvider
                     )
                 }
+
+            imageCapture = ImageCapture.Builder()
+                .build()
 
             // Build CameraX Analyzer
             val imageAnalyzer = ImageAnalysis.Builder()
@@ -81,7 +88,7 @@ class ScanBoardActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 val camera = cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageAnalyzer)
+                    this, cameraSelector, preview, imageCapture, imageAnalyzer)
 
                 val cameraControl = camera.cameraControl
 
@@ -107,6 +114,26 @@ class ScanBoardActivity : AppCompatActivity() {
             }
 
         }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun takePhoto() {
+        val TAG = "IMAGE_CAPTURE"
+        val imageCapture = imageCapture ?: return
+
+        imageCapture.takePicture(ContextCompat.getMainExecutor(this),
+            object : ImageCapture.OnImageCapturedCallback() {
+                override fun onError(exception: ImageCaptureException) {
+                    Log.e(TAG, "Photo capture failed: ${exception.message}", exception)
+                }
+
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    Log.d(TAG, "Photo capture successful!")
+
+                    // Process ImageAnalysis here
+
+                    image.close()
+                }
+        })
     }
 
     private fun requestProcessImage(image : InputImage) : Task<Text> {
