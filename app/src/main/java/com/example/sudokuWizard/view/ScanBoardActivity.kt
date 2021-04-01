@@ -3,6 +3,7 @@ package com.example.sudokuWizard.view
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -56,8 +57,7 @@ class ScanBoardActivity : AppCompatActivity() {
             val preview = Preview.Builder()
                 .build()
                 .also {
-                    it.setSurfaceProvider(view_finder.surfaceProvider
-                    )
+                    it.setSurfaceProvider(view_finder.surfaceProvider)
                 }
 
             imageCapture = ImageCapture.Builder()
@@ -116,12 +116,11 @@ class ScanBoardActivity : AppCompatActivity() {
                     val rotationDegrees = image.imageInfo.rotationDegrees
                     val mediaImage = image.image
                     if(mediaImage != null) {
+
                         requestProcessImage(
                             InputImage.fromMediaImage(mediaImage, rotationDegrees))
                             .addOnCompleteListener{ image.close() }
                     }
-                    // Process ImageAnalysis here
-
                 }
         })
     }
@@ -130,7 +129,6 @@ class ScanBoardActivity : AppCompatActivity() {
         val textRecognizer = TextRecognition.getClient()
         return textRecognizer.process(image)
                 .addOnSuccessListener {results ->
-                    test_text_view.text = results.text
                     board_overlay_view.processScan(results)
                 }
                 .addOnFailureListener {
