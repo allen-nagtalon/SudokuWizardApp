@@ -18,8 +18,6 @@ class BoardOverlayView(context : Context,
 
     private var rows = 9
     private var cols = 9
-    private var rowSubSize = 3
-    private var colSubSize = 3
 
     private var board = Array(rows) {
         _ -> Array(cols) {
@@ -110,6 +108,7 @@ class BoardOverlayView(context : Context,
     }
 
     fun processScan(results: Text) {
+        emptyBoard()
         for(block in results.textBlocks) {
             for(line in block.lines) {
                 for(element in line.elements) {
@@ -128,5 +127,14 @@ class BoardOverlayView(context : Context,
             }
         }
         invalidate()
+    }
+
+
+    private fun emptyBoard() {
+        for(i in board.indices) {
+            for(j in board[i].indices) {
+                board[i][j] = 0
+            }
+        }
     }
 }
