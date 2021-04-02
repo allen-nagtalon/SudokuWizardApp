@@ -26,6 +26,12 @@ class BoardOverlayView(context : Context,
         _ -> 0 }
     }
 
+    private val borderLinePaint = Paint().apply {
+        style = Paint.Style.STROKE
+        color = Color.BLACK
+        strokeWidth = 8F
+    }
+
     private val permanentCellTextPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
         color = Color.CYAN
@@ -50,6 +56,36 @@ class BoardOverlayView(context : Context,
         cellPixelSize = (width / rows)
 
         drawScans(canvas)
+        drawFrame(canvas)
+    }
+
+    private fun drawFrame(canvas: Canvas) {
+        val padding = 4F
+        val halfCell = cellPixelSize / 2
+        val end = width - padding
+        canvas.drawLine(
+            padding,
+            padding,
+            padding + halfCell,
+            padding,
+            borderLinePaint
+        )
+
+        // Top Left
+        canvas.drawLine( padding, padding, padding + halfCell, padding, borderLinePaint)
+        canvas.drawLine( padding, padding, padding, padding + halfCell, borderLinePaint )
+
+        // Top Right
+        canvas.drawLine( end - halfCell, padding, end, padding, borderLinePaint)
+        canvas.drawLine( end, padding, end, padding + halfCell, borderLinePaint )
+
+        // Bottom Left
+        canvas.drawLine( padding, end, padding + halfCell, end, borderLinePaint)
+        canvas.drawLine( padding, end - halfCell, padding, end, borderLinePaint )
+
+        // Bottom Right
+        canvas.drawLine( end - halfCell, end, end, end, borderLinePaint )
+        canvas.drawLine( end, end - halfCell, end, end, borderLinePaint )
     }
 
     private fun drawScans(canvas: Canvas) {
@@ -84,7 +120,7 @@ class BoardOverlayView(context : Context,
                             val possibleX = (bounds.centerX() - xPadding) / 330
                             val possibleY = (bounds.centerY() - yPadding) / 330
                             Log.d("SCANBOARD", "\"${element.text}\" at ($possibleX, $possibleY).")
-                            if(possibleX < 9 && possibleY < 9)
+                            if(possibleX < 9 && possibleY < 9 && possibleX > -1 && possibleY > -1)
                                 board[possibleY][possibleX] = element.text.toInt()
                         }
                     }
