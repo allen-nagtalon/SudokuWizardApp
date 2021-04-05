@@ -3,6 +3,7 @@ package com.example.sudokuWizard.view
 import kotlinx.android.synthetic.main.activity_sudoku_game.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -11,8 +12,7 @@ import com.example.sudokuWizard.engine.Cell
 import com.example.sudokuWizard.view.customview.BoardViewRemake
 import com.example.sudokuWizard.viewmodel.BoardViewModel
 
-class SudokuGameActivity : AppCompatActivity(), BoardViewRemake.OnTouchListener {
-
+class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListener {
     private lateinit var viewModel : BoardViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +22,12 @@ class SudokuGameActivity : AppCompatActivity(), BoardViewRemake.OnTouchListener 
         board_view.registerListener(this)
 
         viewModel = ViewModelProviders.of(this).get(BoardViewModel::class.java)
+
+        intent.getStringExtra("boardLayout")?.let {
+            Log.d("CONFIRMCHECK", it)
+            viewModel.sudokuGame.changeBoard(it)
+        }
+
         viewModel.sudokuGame
             .selectedCellLiveData.observe(this, Observer { updateSelectedCellUI(it)})
         viewModel.sudokuGame.cellsLiveData.observe(this, Observer { updateCells(it) })

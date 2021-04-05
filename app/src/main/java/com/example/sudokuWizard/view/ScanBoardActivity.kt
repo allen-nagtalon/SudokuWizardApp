@@ -2,6 +2,7 @@ package com.example.sudokuWizard.view
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,7 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import kotlinx.android.synthetic.main.activity_scan_board.*
+import kotlinx.android.synthetic.main.activity_sudoku_game.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -37,6 +39,7 @@ class ScanBoardActivity : AppCompatActivity() {
             image_capture_button.setOnClickListener{
                 takePhoto()
             }
+
         } else {
             ActivityCompat.requestPermissions(
                     this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
@@ -139,6 +142,12 @@ class ScanBoardActivity : AppCompatActivity() {
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
                 baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun startSudokuScannedGame(view: View) {
+        val intent = Intent(this, SudokuGameActivity::class.java)
+        intent.putExtra("boardLayout", board_overlay_view.boardToString())
+        startActivity(intent)
     }
 
     companion object {

@@ -32,7 +32,7 @@ class BoardOverlayView(context : Context,
 
     private val permanentCellTextPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
-        color = Color.CYAN
+        color = Color.parseColor("#FF9BA5C1")
         textSize = 64F
         typeface = Typeface.DEFAULT_BOLD
     }
@@ -129,6 +129,15 @@ class BoardOverlayView(context : Context,
         invalidate()
     }
 
+    fun boardToString() : String {
+        var boardLayout = ""
+        board.forEach { row ->
+            row.forEach {
+                boardLayout += "$it,"
+            }
+        }
+        return boardLayout.substring(0, boardLayout.length - 1)
+    }
 
     private fun emptyBoard() {
         for(i in board.indices) {
