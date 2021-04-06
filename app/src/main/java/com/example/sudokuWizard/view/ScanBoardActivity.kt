@@ -2,6 +2,9 @@ package com.example.sudokuWizard.view
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -14,6 +17,7 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 
 import com.example.sudokuWizard.R
 import com.google.android.gms.tasks.Task
@@ -22,6 +26,7 @@ import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import kotlinx.android.synthetic.main.activity_scan_board.*
 import kotlinx.android.synthetic.main.activity_sudoku_game.*
+import java.lang.IllegalStateException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -144,10 +149,28 @@ class ScanBoardActivity : AppCompatActivity() {
                 baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun startSudokuScannedGame(view: View) {
-        val intent = Intent(this, SudokuGameActivity::class.java)
-        intent.putExtra("boardLayout", board_overlay_view.boardToString())
-        startActivity(intent)
+    fun confirmScanCompletion(view: View) {
+        val newFragment = ConfirmationDialogFragment(board_overlay_view.boardToString())
+        newFragment.show(supportFragmentManager, "confirm-check")
+    }
+
+    class ConfirmationDialogFragment(private val boardLayout: String) : DialogFragment() {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            return activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setMessage("Test")
+                    .setPositiveButton("Continue") { _, _ ->
+                        val intent = Intent(this.context, SudokuGameActivity::class.java)
+                        intent.putExtra("boardLayout", boardLayout)
+                        startActivity(intent)
+                    }
+                    .setNegativeButton("Cancel") { _, _ ->
+                        dismiss()
+                    }
+
+                builder.create()
+            } ?: throw IllegalStateException("Activity cannot be null")
+        }
     }
 
     companion object {
