@@ -15,9 +15,13 @@
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="ocr"/>
 
-        <activity android:name=".view.ScanBoardActivity"></activity>
-        <activity android:name=".view.SudokuGameActivity"></activity>
-        <activity android:name=".view.MainMenuActivity">
+        <activity android:name=".view.ScanBoardActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.SudokuGameActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.MainMenuActivity"
+            android:screenOrientation="portrait" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
