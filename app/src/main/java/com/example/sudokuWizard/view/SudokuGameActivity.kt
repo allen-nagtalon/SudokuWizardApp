@@ -52,7 +52,7 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         pencil_button.setOnClickListener {
             viewModel.sudokuGame.enablePencilEdit()
         }
-
+        /*
         solve_button.setOnClickListener {
             if(!viewModel.sudokuGame.solve()) {
                 Toast.makeText(this, "Error: Board could not be solved.", Toast.LENGTH_SHORT).show()
@@ -66,6 +66,7 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         clear_board_button.setOnClickListener {
             viewModel.sudokuGame.clear()
         }
+        */
     }
 
     private fun updateCells(cells : Array<Array<Cell>>?) = cells?.let {
