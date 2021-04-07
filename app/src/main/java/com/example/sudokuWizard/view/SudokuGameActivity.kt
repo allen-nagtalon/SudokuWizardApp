@@ -4,6 +4,8 @@ import kotlinx.android.synthetic.main.activity_sudoku_game.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -67,6 +69,7 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
             viewModel.sudokuGame.clear()
         }
         */
+        setSupportActionBar(toolbar)
     }
 
     private fun updateCells(cells : Array<Array<Cell>>?) = cells?.let {
@@ -75,6 +78,12 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
 
     private fun updateSelectedCellUI(cell : Pair<Int, Int>?) = cell?.let {
         board_view.updateSelectedCellUI(cell.first, cell.second)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater : MenuInflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+        return true
     }
 
     override fun onCellTouched(row : Int, col : Int) {
