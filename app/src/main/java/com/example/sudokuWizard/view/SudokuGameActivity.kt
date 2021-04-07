@@ -57,6 +57,7 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         }
 
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun updateCells(cells : Array<Array<Cell>>?) = cells?.let {
