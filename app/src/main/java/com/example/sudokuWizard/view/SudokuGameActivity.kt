@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -54,21 +55,7 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         pencil_button.setOnClickListener {
             viewModel.sudokuGame.enablePencilEdit()
         }
-        /*
-        solve_button.setOnClickListener {
-            if(!viewModel.sudokuGame.solve()) {
-                Toast.makeText(this, "Error: Board could not be solved.", Toast.LENGTH_SHORT).show()
-            }
-        }
 
-        edit_button.setOnClickListener {
-            viewModel.sudokuGame.enableBoardEdit()
-        }
-
-        clear_board_button.setOnClickListener {
-            viewModel.sudokuGame.clear()
-        }
-        */
         setSupportActionBar(toolbar)
     }
 
@@ -84,6 +71,22 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         val inflater : MenuInflater = menuInflater
         inflater.inflate(R.menu.option_menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_solve -> {
+                if(!viewModel.sudokuGame.solve()) {
+                    Toast.makeText(this, "Error: Board could not be solved.", Toast.LENGTH_SHORT).show()
+                }
+                true
+            }
+            R.id.action_clear -> {
+                viewModel.sudokuGame.clear()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCellTouched(row : Int, col : Int) {
