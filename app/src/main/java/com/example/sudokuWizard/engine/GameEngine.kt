@@ -6,7 +6,7 @@ class GameEngine(val rows : Int,
                  val cols : Int,
                  val rowSubSize : Int,
                  val colSubSize : Int,
-                 val boardLayout : String) {
+                 private val boardLayout : String) {
 
     var selectedCellLiveData = MutableLiveData<Pair<Int, Int>>()
     var cellsLiveData = MutableLiveData<Array<Array<Cell>>>()

@@ -24,7 +24,6 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         viewModel = ViewModelProviders.of(this).get(BoardViewModel::class.java)
 
         intent.getStringExtra("boardLayout")?.let {
-            Log.d("CONFIRMCHECK", it)
             viewModel.sudokuGame.changeBoard(it)
         }
 
