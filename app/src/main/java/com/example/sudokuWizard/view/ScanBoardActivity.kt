@@ -152,6 +152,7 @@ class ScanBoardActivity : AppCompatActivity() {
 
     fun confirmScanCompletion(view: View) {
         val newFragment = ConfirmationDialogFragment(board_overlay_view.boardToString())
+        newFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0)
         newFragment.show(supportFragmentManager, "confirm-check")
     }
 
@@ -159,7 +160,7 @@ class ScanBoardActivity : AppCompatActivity() {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             return activity?.let {
                 val builder = AlertDialog.Builder(it)
-                builder.setMessage("Test")
+                builder.setMessage(R.string.scan_confirmation)
                     .setPositiveButton("Continue") { _, _ ->
                         val intent = Intent(this.context, SudokuGameActivity::class.java)
                         intent.putExtra("boardLayout", boardLayout)
