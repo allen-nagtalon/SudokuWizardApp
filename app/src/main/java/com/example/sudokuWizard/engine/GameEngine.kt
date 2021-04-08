@@ -1,5 +1,6 @@
 package com.example.sudokuWizard.engine
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 
 class GameEngine(val rows : Int,
@@ -107,6 +108,48 @@ class GameEngine(val rows : Int,
         if(!pencilEnabled) pencilEnabled = true
     }
 
+    fun handleDpadInput(direction : Int) {
+        var newRow = selectedRow
+        var newCol = selectedCol
+
+        if(newRow == -1 || newCol == -1) {
+            val cur = getFirstNonPermanentCell()
+            newRow = cur.row
+            newCol = cur.col
+        }
+        else {
+            var cur : Cell
+            when(direction) {
+                UP_DIRECTION -> {
+                    do {
+                        if(newRow != 0) newRow--
+                        else newRow = 8
+                    } while(board.board[newRow][newCol].permanent)
+                }
+                RIGHT_DIRECTION -> {
+                    do {
+                        if(newCol != 8) newCol++
+                        else newCol = 0
+                    } while(board.board[newRow][newCol].permanent)
+                }
+                DOWN_DIRECTION -> {
+                    do {
+                        if(newRow != 8) newRow++
+                        else newRow = 0
+                    } while(board.board[newRow][newCol].permanent)
+                }
+                LEFT_DIRECTION -> {
+                    do {
+                        if(newCol != 0) newCol--
+                        else newCol = 8
+                    } while(board.board[newRow][newCol].permanent)
+                }
+            }
+        }
+
+        updateSelectedCell(newRow, newCol)
+    }
+
     fun updateSelectedCell(row : Int, col : Int) {
         if(!board.getCell(row, col).permanent || boardEditEnabled) {
             selectedRow = row
@@ -116,6 +159,23 @@ class GameEngine(val rows : Int,
             // TEST CODE
             board.getCell(row, col).printCellInfo()
         }
+    }
+
+    private fun getFirstNonPermanentCell() : Cell {
+        board.board.forEach { row ->
+            row.forEach {
+                if(!it.permanent) return it
+            }
+        }
+        return board[0][0]
+    }
+
+
+    companion object {
+        val UP_DIRECTION = 1
+        val RIGHT_DIRECTION = 2
+        val DOWN_DIRECTION = 3
+        val LEFT_DIRECTION = 4
     }
 
     constructor() : this(9, 9, 3, 3,

@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.sudokuWizard.R
 import com.example.sudokuWizard.engine.Cell
+import com.example.sudokuWizard.engine.GameEngine
 import com.example.sudokuWizard.view.customview.BoardViewRemake
 import com.example.sudokuWizard.viewmodel.BoardViewModel
 
@@ -54,6 +55,22 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
 
         pencil_button.setOnClickListener {
             viewModel.sudokuGame.enablePencilEdit()
+        }
+
+        dpad_up_button.setOnClickListener {
+            viewModel.sudokuGame.handleDpadInput(GameEngine.UP_DIRECTION)
+        }
+
+        dpad_right_button.setOnClickListener {
+            viewModel.sudokuGame.handleDpadInput(GameEngine.RIGHT_DIRECTION)
+        }
+
+        dpad_down_button.setOnClickListener {
+            viewModel.sudokuGame.handleDpadInput(GameEngine.DOWN_DIRECTION)
+        }
+
+        dpad_left_button.setOnClickListener {
+            viewModel.sudokuGame.handleDpadInput(GameEngine.LEFT_DIRECTION)
         }
 
         setSupportActionBar(toolbar)
