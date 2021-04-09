@@ -156,26 +156,6 @@
         app:layout_constraintTop_toTopOf="@+id/two_button"
         app:srcCompat="@drawable/numpad_button_clear_states" />
 
-    <ImageButton
-        android:id="@+id/pen_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:contentDescription="@null"
-        app:layout_constraintStart_toStartOf="@+id/clear_button"
-        app:layout_constraintTop_toTopOf="@+id/six_button"
-        app:srcCompat="@drawable/numpad_button_pen_states" />
-
-    <ImageButton
-        android:id="@+id/pencil_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:contentDescription="@null"
-        app:layout_constraintStart_toStartOf="@+id/clear_button"
-        app:layout_constraintTop_toTopOf="@+id/nine_button"
-        app:srcCompat="@drawable/numpad_button_pencil_states" />
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -227,6 +207,30 @@
         app:layout_constraintStart_toStartOf="@+id/dpad_left_button"
         app:layout_constraintTop_toTopOf="@+id/two_button"
         app:srcCompat="@drawable/dpad_button_up_states" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/clear_button"
+        app:layout_constraintTop_toTopOf="@+id/six_button">
+
+        <RadioButton
+            android:id="@+id/pen_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/numpad_button_pen_states"
+            android:button="@null"
+            android:text="" />
+
+        <RadioButton
+            android:id="@+id/pencil_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/numpad_button_pencil_states"
+            android:button="@null"
+            android:text="" />
+    </RadioGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

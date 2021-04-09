@@ -101,7 +101,6 @@ class GameEngine(val rows : Int,
     }
 
     fun enablePencilEdit() {
-        // Return if board edit mode is on
         if(boardEditEnabled) return
 
         // Switch between pen and pencil mode
