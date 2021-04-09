@@ -49,6 +49,8 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
             viewModel.sudokuGame.handleInput(0)
         }
 
+        pen_button.isChecked = true
+
         pen_button.setOnClickListener {
             viewModel.sudokuGame.enablePenEdit()
         }
