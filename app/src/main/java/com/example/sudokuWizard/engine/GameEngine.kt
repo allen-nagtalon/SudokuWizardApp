@@ -86,6 +86,11 @@ class GameEngine(val rows : Int,
         return solved
     }
 
+    fun checkComplete() : Int {
+        val solver = BacktrackingSolver(board)
+        return solver.checkComplete()
+    }
+
     fun clear() {
         board.clear()
         cellsLiveData.postValue(board.board)
@@ -117,7 +122,6 @@ class GameEngine(val rows : Int,
             newCol = cur.col
         }
         else {
-            var cur : Cell
             when(direction) {
                 UP_DIRECTION -> {
                     do {

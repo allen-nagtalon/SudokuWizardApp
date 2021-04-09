@@ -7,7 +7,7 @@ class LogicStepSolver(private val boardLayout : String) : SudokuSolver {
         TODO("Not yet implemented")
     }
 
-    override fun checkComplete(): Boolean {
+    override fun checkComplete(): Int {
         TODO("Not yet implemented")
     }
 }

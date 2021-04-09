@@ -65,13 +65,13 @@ class BacktrackingSolver(private val board : Board) : SudokuSolver {
         return true
     }
 
-    override fun checkComplete() : Boolean {
+    override fun checkComplete() : Int {
         for(row in board.START_INDEX until board.ROWS) {
             for(col in board.START_INDEX until board.COLS) {
-                if(board[row][col].value == board.EMPTY_CELL) return false
-                else if (!isValid(row, col)) return false
+                if(board[row][col].value == board.EMPTY_CELL) return SudokuSolver.INCOMPLETE
+                else if (!isValid(row, col)) return SudokuSolver.INCORRECT
             }
         }
-        return true
+        return SudokuSolver.SOLVED
     }
 }

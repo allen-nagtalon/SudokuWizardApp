@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.sudokuWizard.R
 import com.example.sudokuWizard.engine.Cell
 import com.example.sudokuWizard.engine.GameEngine
+import com.example.sudokuWizard.engine.SudokuSolver
 import com.example.sudokuWizard.view.customview.BoardViewRemake
 import com.example.sudokuWizard.viewmodel.BoardViewModel
 
@@ -42,6 +43,14 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         buttons.forEachIndexed { index, button ->
             button.setOnClickListener {
                 viewModel.sudokuGame.handleInput(index + 1)
+                when(viewModel.sudokuGame.checkComplete()) {
+                    SudokuSolver.SOLVED -> {
+                        Toast.makeText(this, "The board is solved!", Toast.LENGTH_SHORT).show()
+                    }
+                    SudokuSolver.INCORRECT -> {
+                        Toast.makeText(this, "A cell is incorrect.", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 
@@ -98,6 +107,8 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
             R.id.action_solve -> {
                 if(!viewModel.sudokuGame.solve()) {
                     Toast.makeText(this, "Error: Board could not be solved.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "The board is solved!", Toast.LENGTH_SHORT).show()
                 }
                 true
             }
