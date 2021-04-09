@@ -4,6 +4,10 @@ import com.example.sudokuWizard.engine.SudokuSolver
 
 class LogicStepSolver(private val boardLayout : String) : SudokuSolver {
     override fun solve() : Boolean {
-        return false
+        TODO("Not yet implemented")
+    }
+
+    override fun checkComplete(): Boolean {
+        TODO("Not yet implemented")
     }
 }

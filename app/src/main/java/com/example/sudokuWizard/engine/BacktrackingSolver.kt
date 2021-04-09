@@ -64,4 +64,14 @@ class BacktrackingSolver(private val board : Board) : SudokuSolver {
         }
         return true
     }
+
+    override fun checkComplete() : Boolean {
+        for(row in board.START_INDEX until board.ROWS) {
+            for(col in board.START_INDEX until board.COLS) {
+                if(board[row][col].value == board.EMPTY_CELL) return false
+                else if (!isValid(row, col)) return false
+            }
+        }
+        return true
+    }
 }

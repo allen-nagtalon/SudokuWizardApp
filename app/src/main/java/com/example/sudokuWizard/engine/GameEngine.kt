@@ -79,7 +79,7 @@ class GameEngine(val rows : Int,
         cellsLiveData.postValue(board.board)
     }
 
-    fun solve() : Boolean{
+    fun solve() : Boolean {
         val solver = BacktrackingSolver(board)
         val solved = solver.solve()
         cellsLiveData.postValue(board.board)
