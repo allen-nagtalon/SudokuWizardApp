@@ -96,7 +96,7 @@ class GameEngine(val rows : Int,
         cellsLiveData.postValue(board.board)
     }
 
-    fun enableBoardEdit() {
+    fun toggleBoardEdit() {
         boardEditEnabled = !boardEditEnabled
         pencilEnabled = false
     }

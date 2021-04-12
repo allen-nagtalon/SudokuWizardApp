@@ -164,6 +164,7 @@ class ScanBoardActivity : AppCompatActivity() {
                     .setPositiveButton("Continue") { _, _ ->
                         val intent = Intent(this.context, SudokuGameActivity::class.java)
                         intent.putExtra("boardLayout", boardLayout)
+                        intent.putExtra("newBoard", false)
                         startActivity(intent)
                     }
                     .setNegativeButton("Cancel") { _, _ ->
