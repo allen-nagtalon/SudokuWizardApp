@@ -4,10 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -25,7 +23,6 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import kotlinx.android.synthetic.main.activity_scan_board.*
-import kotlinx.android.synthetic.main.activity_sudoku_game.*
 import java.lang.IllegalStateException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -161,13 +158,13 @@ class ScanBoardActivity : AppCompatActivity() {
             return activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.setMessage(R.string.scan_confirmation)
-                    .setPositiveButton("Continue") { _, _ ->
+                    .setPositiveButton(R.string.continue_button) { _, _ ->
                         val intent = Intent(this.context, SudokuGameActivity::class.java)
                         intent.putExtra("boardLayout", boardLayout)
                         intent.putExtra("newBoard", false)
                         startActivity(intent)
                     }
-                    .setNegativeButton("Cancel") { _, _ ->
+                    .setNegativeButton(R.string.cancel_button) { _, _ ->
                         dismiss()
                     }
 
