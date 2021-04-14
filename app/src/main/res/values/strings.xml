@@ -5,10 +5,18 @@
     <string name="board_editor_button">Start Board</string>
     <string name="board_scan_button">Scan Board</string>
 
+    <!-- New Board Text -->
+    <string name="manual_board_confirmation">Start game with current board?</string>
+
+    <!-- Scan Board Text -->
+    <string name="scan_confirmation">Continue with current scan?</string>
+
     <!-- General Buttons -->
     <string name="solve_button">Solve</string>
     <string name="edit_button">Edit</string>
     <string name="clear_board_button">Clear</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="continue_button">Continue</string>
 
     <!-- Number Buttons for Cells -->
     <string name="one_button">1</string>
