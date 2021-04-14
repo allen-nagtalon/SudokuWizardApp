@@ -26,9 +26,12 @@ import java.lang.IllegalStateException
 
 class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListener {
     private lateinit var viewModel : BoardViewModel
+
     private var seconds : Int = 0
     private lateinit var timerHandler : Handler
     private lateinit var timerRunnable : Runnable
+
+    /** OVERRIDE FUNCTIONS ******/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +59,63 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
             .selectedCellLiveData.observe(this, Observer { updateSelectedCellUI(it)})
         viewModel.sudokuGame.cellsLiveData.observe(this, Observer { updateCells(it) })
 
+        applyButtonListeners()
+
+        timerHandler = Handler()
+        timerRunnable = Runnable {
+            seconds += 1
+            var minutes = seconds / 60
+
+            timer.text = String.format("%d:%02d", minutes, seconds % 60)
+
+            timerHandler.postDelayed(timerRunnable, 1000)
+        }
+
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timerHandler.removeCallbacks(timerRunnable)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        timerHandler.postDelayed(timerRunnable, 0)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater : MenuInflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_solve -> {
+                if(!viewModel.sudokuGame.solve()) {
+                    Toast.makeText(this, "Error: Board could not be solved.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "The board is solved!", Toast.LENGTH_SHORT).show()
+                }
+                true
+            }
+            R.id.action_clear -> {
+                viewModel.sudokuGame.clear()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCellTouched(row : Int, col : Int) {
+        viewModel.sudokuGame.updateSelectedCell(row, col)
+    }
+
+    /** PRIVATE FUNCTIONS ******/
+
+    private fun applyButtonListeners() {
         val buttons = listOf(one_button, two_button, three_button,
             four_button, five_button, six_button, seven_button,
             eight_button, nine_button)
@@ -111,31 +171,6 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
 
             viewModel.sudokuGame.toggleBoardEdit()
         }
-
-        timerHandler = Handler()
-        timerRunnable = Runnable {
-            seconds += 1
-            var minutes = seconds / 60
-
-            timer.text = String.format("%d:%02d", minutes, seconds % 60)
-
-            timerHandler.postDelayed(timerRunnable, 1000)
-        }
-
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        timerHandler.removeCallbacks(timerRunnable)
-        Log.d("LIFECYCLE_CHECK", "onPause called.")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        timerHandler.postDelayed(timerRunnable, 0)
-        Log.d("LIFECYCLE_CHECK", "onResume called.")
     }
 
     private fun updateCells(cells : Array<Array<Cell>>?) = cells?.let {
@@ -144,34 +179,6 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
 
     private fun updateSelectedCellUI(cell : Pair<Int, Int>?) = cell?.let {
         board_view.updateSelectedCellUI(cell.first, cell.second)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater : MenuInflater = menuInflater
-        inflater.inflate(R.menu.option_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_solve -> {
-                if(!viewModel.sudokuGame.solve()) {
-                    Toast.makeText(this, "Error: Board could not be solved.", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "The board is solved!", Toast.LENGTH_SHORT).show()
-                }
-                true
-            }
-            R.id.action_clear -> {
-                viewModel.sudokuGame.clear()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onCellTouched(row : Int, col : Int) {
-        viewModel.sudokuGame.updateSelectedCell(row, col)
     }
 
     /*
