@@ -26,7 +26,7 @@ import java.lang.IllegalStateException
 
 class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListener {
     private lateinit var viewModel : BoardViewModel
-    private var startTime : Long = 0
+    private var seconds : Int = 0
     private lateinit var timerHandler : Handler
     private lateinit var timerRunnable : Runnable
 
@@ -112,22 +112,30 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
             viewModel.sudokuGame.toggleBoardEdit()
         }
 
-        startTime = System.currentTimeMillis()
         timerHandler = Handler()
         timerRunnable = Runnable {
-            var millis = System.currentTimeMillis() - startTime
-            var seconds = (millis / 1000).toInt()
+            seconds += 1
             var minutes = seconds / 60
-            seconds %= 60
 
-            timer.text = String.format("%d:%02d", minutes, seconds)
+            timer.text = String.format("%d:%02d", minutes, seconds % 60)
 
             timerHandler.postDelayed(timerRunnable, 1000)
         }
-        timerHandler.postDelayed(timerRunnable, 0)
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timerHandler.removeCallbacks(timerRunnable)
+        Log.d("LIFECYCLE_CHECK", "onPause called.")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        timerHandler.postDelayed(timerRunnable, 0)
+        Log.d("LIFECYCLE_CHECK", "onResume called.")
     }
 
     private fun updateCells(cells : Array<Array<Cell>>?) = cells?.let {
