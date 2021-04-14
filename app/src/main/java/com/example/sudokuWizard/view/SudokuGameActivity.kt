@@ -1,13 +1,19 @@
 package com.example.sudokuWizard.view
 
+import android.app.AlertDialog
+import android.app.Dialog
 import kotlinx.android.synthetic.main.activity_sudoku_game.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.postDelayed
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.sudokuWizard.R
@@ -16,9 +22,13 @@ import com.example.sudokuWizard.engine.GameEngine
 import com.example.sudokuWizard.engine.SudokuSolver
 import com.example.sudokuWizard.view.customview.BoardViewRemake
 import com.example.sudokuWizard.viewmodel.BoardViewModel
+import java.lang.IllegalStateException
 
 class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListener {
     private lateinit var viewModel : BoardViewModel
+    private var startTime : Long = 0
+    private lateinit var timerHandler : Handler
+    private lateinit var timerRunnable : Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,6 +112,20 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
             viewModel.sudokuGame.toggleBoardEdit()
         }
 
+        startTime = System.currentTimeMillis()
+        timerHandler = Handler()
+        timerRunnable = Runnable {
+            var millis = System.currentTimeMillis() - startTime
+            var seconds = (millis / 1000).toInt()
+            var minutes = seconds / 60
+            seconds %= 60
+
+            timer.text = String.format("%d:%02d", minutes, seconds)
+
+            timerHandler.postDelayed(timerRunnable, 1000)
+        }
+        timerHandler.postDelayed(timerRunnable, 0)
+
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
@@ -141,4 +165,23 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
     override fun onCellTouched(row : Int, col : Int) {
         viewModel.sudokuGame.updateSelectedCell(row, col)
     }
+
+    /*
+    class ConfirmationDialogFragment(private val boardLayout: String) : DialogFragment() {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            return activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setMessage(R.string.scan_confirmation)
+                    .setPositiveButton("Continue") { _, _ ->
+
+                    }
+                    .setNegativeButton("Cancel") { _, _ ->
+                        dismiss()
+                    }
+
+                builder.create()
+            } ?: throw IllegalStateException("Activity cannot be null")
+        }
+    }
+    */
 }
