@@ -12,7 +12,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.core.os.postDelayed
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,12 +21,12 @@ import com.example.sudokuWizard.engine.GameEngine
 import com.example.sudokuWizard.engine.SudokuSolver
 import com.example.sudokuWizard.view.customview.BoardViewRemake
 import com.example.sudokuWizard.viewmodel.BoardViewModel
-import java.lang.IllegalStateException
 
 class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListener {
     private lateinit var viewModel : BoardViewModel
 
     private var seconds : Int = 0
+    private var minutes : Int = 0
     private lateinit var timerHandler : Handler
     private lateinit var timerRunnable : Runnable
 
@@ -63,8 +62,8 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
 
         timerHandler = Handler()
         timerRunnable = Runnable {
-            seconds += 1
-            var minutes = seconds / 60
+            seconds++
+            minutes = seconds / 60
 
             timer.text = String.format("%d:%02d", minutes, seconds % 60)
 
@@ -98,6 +97,7 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
                     Toast.makeText(this, "Error: Board could not be solved.", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "The board is solved!", Toast.LENGTH_SHORT).show()
+                    timerHandler.removeCallbacks(timerRunnable)
                 }
                 true
             }
@@ -125,7 +125,8 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
                 viewModel.sudokuGame.handleInput(index + 1)
                 when(viewModel.sudokuGame.checkComplete()) {
                     SudokuSolver.SOLVED -> {
-                        Toast.makeText(this, "The board is solved!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, String.format("The board was solved in %d:%02d!", minutes, seconds % 60), Toast.LENGTH_SHORT).show()
+                        timerHandler.removeCallbacks(timerRunnable)
                     }
                     SudokuSolver.INCORRECT -> {
                         Toast.makeText(this, "A cell is incorrect.", Toast.LENGTH_SHORT).show()
