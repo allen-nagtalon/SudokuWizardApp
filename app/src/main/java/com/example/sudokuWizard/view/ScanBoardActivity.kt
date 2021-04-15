@@ -103,6 +103,10 @@ class ScanBoardActivity : AppCompatActivity() {
                 Log.e(TAG, "Use case binding failed", exc)
             }
 
+            confirm_button.setOnClickListener {
+                confirmScanCompletion()
+            }
+
         }, ContextCompat.getMainExecutor(this))
     }
 
@@ -147,7 +151,7 @@ class ScanBoardActivity : AppCompatActivity() {
                 baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun confirmScanCompletion(view: View) {
+    fun confirmScanCompletion() {
         val newFragment = ConfirmationDialogFragment(board_overlay_view.boardToString())
         newFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0)
         newFragment.show(supportFragmentManager, "confirm-check")
