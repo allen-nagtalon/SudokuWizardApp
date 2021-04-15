@@ -166,11 +166,7 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         }
 
         check_button.setOnClickListener {
-            check_button.visibility = View.GONE
-            pen_button.visibility = View.VISIBLE
-            pencil_button.visibility = View.VISIBLE
-
-            viewModel.sudokuGame.toggleBoardEdit()
+            confirmNewBoardCompletion()
         }
     }
 
@@ -182,16 +178,29 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         board_view.updateSelectedCellUI(cell.first, cell.second)
     }
 
-    /*
-    class ConfirmationDialogFragment(private val boardLayout: String) : DialogFragment() {
+    fun startGame() {
+        check_button.visibility = View.GONE
+        pen_button.visibility = View.VISIBLE
+        pencil_button.visibility = View.VISIBLE
+
+        viewModel.sudokuGame.toggleBoardEdit()
+    }
+
+    private fun confirmNewBoardCompletion() {
+        val newFragment = ConfirmationDialogFragment(this)
+        newFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0)
+        newFragment.show(supportFragmentManager, "confirm-check")
+    }
+
+    class ConfirmationDialogFragment(private val game : SudokuGameActivity) : DialogFragment() {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             return activity?.let {
                 val builder = AlertDialog.Builder(it)
-                builder.setMessage(R.string.scan_confirmation)
-                    .setPositiveButton("Continue") { _, _ ->
-
+                builder.setMessage(R.string.manual_board_confirmation)
+                    .setPositiveButton(R.string.continue_button) { _, _ ->
+                        game.startGame()
                     }
-                    .setNegativeButton("Cancel") { _, _ ->
+                    .setNegativeButton(R.string.cancel_button) { _, _ ->
                         dismiss()
                     }
 
@@ -199,5 +208,4 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
             } ?: throw IllegalStateException("Activity cannot be null")
         }
     }
-    */
 }
