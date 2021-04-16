@@ -31,6 +31,8 @@ class ScanBoardActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
 
+    /** OVERRIDE FUNCTIONS ****/
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_board)
@@ -50,6 +52,8 @@ class ScanBoardActivity : AppCompatActivity() {
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
+
+    /** PRIVATE FUNCTIONS ****/
 
     @SuppressLint("UnsafeExperimentalUsageError")
     private fun startCamera() {
@@ -151,11 +155,13 @@ class ScanBoardActivity : AppCompatActivity() {
                 baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun confirmScanCompletion() {
+    private fun confirmScanCompletion() {
         val newFragment = ConfirmationDialogFragment(board_overlay_view.boardToString())
         newFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0)
         newFragment.show(supportFragmentManager, "confirm-check")
     }
+
+    /** CLASSES AND COMPANION OBJECTS ****/
 
     class ConfirmationDialogFragment(private val boardLayout: String) : DialogFragment() {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -81,7 +81,8 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
 
     override fun onResume() {
         super.onResume()
-        timerHandler.postDelayed(timerRunnable, 0)
+        if(!viewModel.sudokuGame.boardEditEnabled)
+            timerHandler.postDelayed(timerRunnable, 0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -184,6 +185,7 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         pencil_button.visibility = View.VISIBLE
 
         viewModel.sudokuGame.toggleBoardEdit()
+        timerHandler.postDelayed(timerRunnable, 0)
     }
 
     private fun confirmNewBoardCompletion() {

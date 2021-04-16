@@ -3,16 +3,17 @@ package com.example.sudokuWizard.engine
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 
-class GameEngine(val rows : Int,
-                 val cols : Int,
-                 val rowSubSize : Int,
-                 val colSubSize : Int,
-                 private val boardLayout : String) {
+class GameEngine(
+    private val rows : Int,
+    private val cols : Int,
+    val rowSubSize : Int,
+    val colSubSize : Int,
+    private val boardLayout : String) {
 
     var selectedCellLiveData = MutableLiveData<Pair<Int, Int>>()
     var cellsLiveData = MutableLiveData<Array<Array<Cell>>>()
     var boardEditEnabled = false
-    var pencilEnabled = false
+    private var pencilEnabled = false
 
     private var selectedRow = -1
     private var selectedCol = -1
@@ -37,6 +38,19 @@ class GameEngine(val rows : Int,
         boardEditEnabled = false
     }
 
+    /** PRIVATE FUNCTIONS ****/
+
+    private fun getFirstNonPermanentCell() : Cell {
+        board.board.forEach { row ->
+            row.forEach {
+                if(!it.permanent) return it
+            }
+        }
+        return board[0][0]
+    }
+
+    /** PUBLIC FUNCTIONS ****/
+
     fun changeBoard(boardLayout: String) {
         val cellValues = boardLayout.split(",").toTypedArray()
 
@@ -60,7 +74,7 @@ class GameEngine(val rows : Int,
 
         // Add note or mark cell
         if(pencilEnabled) {
-            var cell = board.getCell(selectedRow, selectedCol)
+            val cell = board.getCell(selectedRow, selectedCol)
             if(number == 0) {
                 for(i in cell.notes.indices) cell.notes[i] = false
             } else {
@@ -164,21 +178,13 @@ class GameEngine(val rows : Int,
         }
     }
 
-    private fun getFirstNonPermanentCell() : Cell {
-        board.board.forEach { row ->
-            row.forEach {
-                if(!it.permanent) return it
-            }
-        }
-        return board[0][0]
-    }
-
+    /** CLASSES AND COMPANIONS OBJECTS ****/
 
     companion object {
-        val UP_DIRECTION = 1
-        val RIGHT_DIRECTION = 2
-        val DOWN_DIRECTION = 3
-        val LEFT_DIRECTION = 4
+        const val UP_DIRECTION = 1
+        const val RIGHT_DIRECTION = 2
+        const val DOWN_DIRECTION = 3
+        const val LEFT_DIRECTION = 4
     }
 
     constructor() : this(9, 9, 3, 3,
