@@ -1,6 +1,6 @@
 package com.example.sudokuWizard.engine
 
-class Board(
+class Board (
     private val cells: List<Cell>,
     val MAX_VALUE : Int,
     val ROWS : Int,
@@ -13,7 +13,7 @@ class Board(
     val START_INDEX = 0
     val MIN_VALUE = 1
 
-    // Initialize board as 2D array of Int
+    // Initialize board as 2D array of Cells
     var board = Array(ROWS) {
             i -> Array(COLS) {
             j -> cells[(i*COLS)+j] }
