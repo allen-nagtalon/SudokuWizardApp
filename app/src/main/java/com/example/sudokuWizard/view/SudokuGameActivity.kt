@@ -179,6 +179,14 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
         board_view.updateSelectedCellUI(cell.first, cell.second)
     }
 
+    private fun confirmNewBoardCompletion() {
+        val newFragment = ConfirmationDialogFragment(this)
+        newFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0)
+        newFragment.show(supportFragmentManager, "confirm-check")
+    }
+
+    /** PUBLIC FUNCTIONS ****/
+
     fun startGame() {
         check_button.visibility = View.GONE
         pen_button.visibility = View.VISIBLE
@@ -186,12 +194,6 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
 
         viewModel.sudokuGame.toggleBoardEdit()
         timerHandler.postDelayed(timerRunnable, 0)
-    }
-
-    private fun confirmNewBoardCompletion() {
-        val newFragment = ConfirmationDialogFragment(this)
-        newFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0)
-        newFragment.show(supportFragmentManager, "confirm-check")
     }
 
     class ConfirmationDialogFragment(private val game : SudokuGameActivity) : DialogFragment() {
