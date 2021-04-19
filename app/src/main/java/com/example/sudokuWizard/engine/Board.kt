@@ -35,6 +35,12 @@ class Board (
         }
     }
 
+    fun getCellList() : List<Cell> {
+        return List<Cell>(81) {index ->
+            board[index / 9][index % 9]
+        }
+    }
+
     fun printBoard() {
         for(row in board) {
             for(col in row) {
