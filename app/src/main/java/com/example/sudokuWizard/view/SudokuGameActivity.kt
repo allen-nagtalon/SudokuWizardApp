@@ -2,6 +2,7 @@ package com.example.sudokuWizard.view
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import kotlinx.android.synthetic.main.activity_sudoku_game.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,9 +19,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.sudokuWizard.R
 import com.example.sudokuWizard.engine.Cell
 import com.example.sudokuWizard.engine.GameEngine
+import com.example.sudokuWizard.engine.SerializableGame
 import com.example.sudokuWizard.engine.SudokuSolver
 import com.example.sudokuWizard.view.customview.BoardViewRemake
 import com.example.sudokuWizard.viewmodel.BoardViewModel
+import java.io.ObjectOutputStream
 
 class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListener {
     private lateinit var viewModel : BoardViewModel
@@ -194,6 +197,21 @@ class SudokuGameActivity() : AppCompatActivity(), BoardViewRemake.OnTouchListene
 
         viewModel.sudokuGame.toggleBoardEdit()
         timerHandler.postDelayed(timerRunnable, 0)
+    }
+
+    fun save() {
+        val testFileName = "Test.dat"
+        applicationContext.openFileOutput(testFileName, Context.MODE_PRIVATE).use {
+            val out = ObjectOutputStream(it)
+            out.writeObject(SerializableGame(viewModel.sudokuGame.getCellList(), seconds))
+
+            out.close()
+            it.close()
+        }
+    }
+
+    fun load() {
+
     }
 
     class ConfirmationDialogFragment(private val game : SudokuGameActivity) : DialogFragment() {

@@ -178,6 +178,10 @@ class GameEngine(
         }
     }
 
+    fun getCellList() : List<Cell> {
+        return board.getCellList()
+    }
+
     /** CLASSES AND COMPANIONS OBJECTS ****/
 
     companion object {
